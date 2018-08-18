@@ -8,3 +8,4 @@ Mixin to add persistent state storing functionality to a class. StateStorage sol
 npm install
 node sample/Sample.s
 ```
+
