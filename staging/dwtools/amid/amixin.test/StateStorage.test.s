@@ -35,7 +35,72 @@ var _ = wTools;
 
 function trivial( test )
 {
+
+  function SomeClass( o )
+  {
+    return _.instanceConstructor( SomeClass, this, arguments );
+  }
+
+  function init( o )
+  {
+    let sample = this;
+    _.instanceInit( sample );
+  }
+
+  function storageLoaded( storage, op )
+  {
+    let self = this;
+    let result = _.StateStorage.prototype.storageLoaded.call( self, storage, op );
+
+    self.random = storage.random;
+
+    return result;
+  }
+
+  function storageToSave( op )
+  {
+    let self = this;
+
+    let storage = { random : self.random };
+
+    return storage;
+  }
+
+  let Associates =
+  {
+    storageFileName : '.test.config.json',
+    fileProvider : _.define.ownInstanceOf( _.FileProvider.Extract ),
+  }
+
+  let Extend =
+  {
+    init : init,
+    storageLoaded : storageLoaded,
+    storageToSave : storageToSave,
+    Associates : Associates,
+  }
+
+  _.classDeclare
+  ({
+    cls : SomeClass,
+    extend : Extend,
+  });
+
+  _.StateStorage.mixin( SomeClass );
+
+  /* */
+
+  let sample = new SomeClass();
+  sample.storageLoad();
+  if( !sample.random )
+  sample.random = Math.random();
+  sample.storageSave();
+  console.log( 'sample.random', sample.storageFilePathToLoadGet(), sample.random );
+
+  /* */
+
   test.identical( 1,1 );
+
 }
 
 //
