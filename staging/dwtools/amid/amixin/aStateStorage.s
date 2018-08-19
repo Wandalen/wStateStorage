@@ -65,7 +65,10 @@ function _storageFileSave( o )
   _.routineOptions( _storageFileSave, arguments );
 
   if( logger.verbosity >= 3 )
-  logger.log( ' + saving config of ' + _.strReplaceAll( self.storageFileName,'.','' ) + ' ' + _.strQuote( o.storageFilePath ) );
+  {
+    let title = _.strQuote( _.strCapitalize( _.strToTitle( self.storageFileName ) ) );
+    logger.log( ' + saving config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
+  }
 
   let map;
 
@@ -149,8 +152,9 @@ _storageSave.defaults =
 function storageSave()
 {
   let self = this;
-  // let storageDirPath = self.storageDirPathGet();
+  debugger;
   let storageFilePath = self.storageFilePathToSaveGet();
+  debugger;
 
   _.assert( arguments.length === 0 );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
@@ -188,7 +192,10 @@ function _storageFileLoad( o )
   /* */
 
   if( logger.verbosity >= 3 )
-  logger.log( ' . loading config of ' + _.strReplaceAll( self.storageFileName, '.', '' ) + ' ' + _.strQuote( o.storageFilePath ) );
+  {
+    let title = _.strQuote( _.strCapitalize( _.strToTitle( self.storageFileName ) ) );
+    logger.log( ' . loading config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
+  }
 
   let read = fileProvider.fileReadJs( o.storageFilePath );
 
@@ -322,16 +329,16 @@ function _storageFilePathGet( storageDirPath )
   if( !self.storageFilePath )
   return;
 
-  let storageFilePath = self.storageFileFromDirPath( storageDirPath );
-
-  debugger; xxx
+  let storageFilePath = self.storageFilePath;
+  // let storageFilePath = self.storageFileFromDirPath( storageDirPath );
+  // debugger;
 
   storageFilePath = _.map( storageFilePath, ( storageFilePath ) =>
   {
     if( fileProvider.directoryIs( storageFilePath ) )
     return fileProvider.path.join( storageFilePath , self.storageFileName );
     else
-    storageFilePath
+    return storageFilePath;
   });
 
   return storageFilePath;
@@ -370,7 +377,7 @@ function storageFilePathToLoadGet( storageDirPath )
 
   _.sure
   (
-    _.every( storageFilePath, ( storageFilePath ) => fileProvider.fileStat( storageFilePath ) ),
+    _.all( storageFilePath, ( storageFilePath ) => fileProvider.fileStat( storageFilePath ) ),
     () => 'Directory for storage file does not exist ' + _.strQuote( storageFilePath )
   );
 
@@ -400,7 +407,7 @@ function storageFilePathToSaveGet( storageDirPath )
 
   _.sure
   (
-    _.every( storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( fileProvider.path.dir( storageFilePath ) ) ),
+    _.all( storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( fileProvider.path.dir( storageFilePath ) ) ),
     () => 'Directory for storage file does not exist ' + _.strQuote( storageFilePath )
   );
 
