@@ -53,6 +53,41 @@ Self.shortName = 'StateStorage';
 //
 // --
 
+function _storageFileSaveAct( o )
+{
+  let self = this;
+  let fileProvider = self.fileProvider;
+  let logger = self.logger || _global_.logger;
+
+  _.routineOptions( _storageFileSaveAct, o );
+  _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-self.storageToSave-}' );
+  _.assert( arguments.length === 1 );
+
+  if( logger.verbosity >= 3 )
+  {
+    let title = _.strQuote( _.strCapitalize( _.strToTitle( self.storageFileName ) ) );
+    logger.log( ' + saving config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
+  }
+
+  fileProvider.fileWriteJson
+  ({
+    filePath : o.storageFilePath,
+    data : o.storage,
+    pretty : 1,
+    sync : 1,
+  });
+
+}
+
+_storageFileSaveAct.defaults =
+{
+  storageFilePath : null,
+  splitting : 0,
+  storage : null,
+}
+
+//
+
 function _storageFileSave( o )
 {
   let self = this;
@@ -63,35 +98,11 @@ function _storageFileSave( o )
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
   _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( _storageFileSave, arguments );
+  _.assert( _.routineIs( self.storageToSave ) );
 
-  if( logger.verbosity >= 3 )
-  {
-    let title = _.strQuote( _.strCapitalize( _.strToTitle( self.storageFileName ) ) );
-    logger.log( ' + saving config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
-  }
+  o.storage = self.storageToSave( o );
 
-  let map;
-
-  if( _.routineIs( self.storageToSave ) )
-  map = self.storageToSave( o );
-  else
-  map = self.storageToSave;
-
-  _.assert( map !== undefined && !_.routineIs( map ), () => 'Expects defined data {-self.storageToSave-}' );
-
-  // if( o.splitting )
-  // {
-  // if( _.routineIs( self.storageToSave ) )
-  // map = self.storageToSave( o );
-  // }
-
-  fileProvider.fileWriteJson
-  ({
-    filePath : o.storageFilePath,
-    data : map,
-    pretty : 1,
-    sync : 1,
-  });
+  self._storageFileSaveAct( o );
 
 }
 
@@ -115,13 +126,6 @@ function _storageSave( o )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.routineOptions( _storageSave, o );
 
-  // o.basePath = o.basePath ? _.path.pathsFrom( o.basePath ) : self.basePath;
-  // let storageFilePath = self.storageFileName;
-  // if( o.basePath )
-  // storageFilePath = _.path.pathsJoin( o.basePath , storageFilePath );
-
-  debugger;
-
   o.storageFilePath = o.storageFilePath || self.storageFilePathToSaveGet();
 
   if( _.arrayIs( o.storageFilePath ) )
@@ -144,7 +148,6 @@ function _storageSave( o )
 _storageSave.defaults =
 {
   storageFilePath : null,
-  // basePath : null,
 }
 
 //
@@ -442,7 +445,20 @@ function storageLoaded( storage, op )
     self.loadedStorages.push({ filePath : op.storageFilePath });
   }
 
+  if( self.storage !== undefined )
+  self.storage = _.mapExtend( self.storage, storage );
+
   return true;
+}
+
+//
+
+function storageToSave( op )
+{
+  let self = this;
+  let storage = self.storage;
+  _.assert( storage !== undefined, '{-self.storage-} is not defined' );
+  return storage;
 }
 
 // --
@@ -491,6 +507,7 @@ let Accessors =
 let Supplement =
 {
 
+  _storageFileSaveAct : _storageFileSaveAct,
   _storageFileSave : _storageFileSave,
   _storageSave : _storageSave,
   storageSave : storageSave,
@@ -507,7 +524,7 @@ let Supplement =
 
   storageIs : storageIs,
   storageLoaded : storageLoaded,
-  /* storageToSave : storageToSave, */
+  storageToSave : storageToSave,
 
   //
 
