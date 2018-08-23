@@ -473,6 +473,7 @@ let Composes =
 {
   /* storageFileName : '.storage', */
   /* storageFilePath : null, */
+  /* storageSaveAsJs : 1, */
 }
 
 let Aggregates =
