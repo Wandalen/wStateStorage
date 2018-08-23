@@ -69,14 +69,18 @@ function _storageFileSaveAct( o )
     logger.log( ' + saving config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
   }
 
-  fileProvider.fileWriteJson
-  ({
+  let options =
+  {
     filePath : o.storageFilePath,
     data : o.storage,
     pretty : 1,
     sync : 1,
-  });
+  }
 
+  if( self.storageSaveAsJs )
+  fileProvider.fileWriteJs( options );
+  else
+  fileProvider.fileWriteJson( options );
 }
 
 _storageFileSaveAct.defaults =
