@@ -77,7 +77,7 @@ function _storageFileSaveAct( o )
     sync : 1,
   }
 
-  if( self.storageSaveAsJs )
+  if( self.storageSavingAsJs )
   fileProvider.fileWriteJs( options );
   else
   fileProvider.fileWriteJson( options );
@@ -473,7 +473,7 @@ let Composes =
 {
   /* storageFileName : '.storage', */
   /* storageFilePath : null, */
-  /* storageSaveAsJs : 1, */
+  storageSavingAsJs : 1,
 }
 
 let Aggregates =
