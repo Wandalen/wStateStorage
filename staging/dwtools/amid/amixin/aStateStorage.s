@@ -159,9 +159,9 @@ _storageSave.defaults =
 function storageSave()
 {
   let self = this;
-  debugger;
+  // debugger;
   let storageFilePath = self.storageFilePathToSaveGet();
-  debugger;
+  // debugger;
 
   _.assert( arguments.length === 0 );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
