@@ -298,7 +298,7 @@ function storageDirPathGet( storageDirPath )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  storageDirPath = fileProvider.pathResolve( storageDirPath || null );
+  storageDirPath = fileProvider.path.resolve( storageDirPath || null );
 
   _.assert( fileProvider.path.isAbsolute( storageDirPath ) );
 
