@@ -229,7 +229,7 @@ function _storageLoad( o )
 
   o.storageDirPath = self.storageDirPathGet( o.storageDirPath );
   o.storageFilePath = o.storageFilePath || self.storageFileName;
-  o.storageFilePath = _.path.pathsJoin( o.storageDirPath, o.storageFilePath );
+  o.storageFilePath = _.path.s.join( o.storageDirPath, o.storageFilePath );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( !!o.storageFilePath );
@@ -318,7 +318,7 @@ function storageFileFromDirPath( storageDirPath )
 
   storageDirPath = self.storageDirPathGet( storageDirPath );
 
-  storageFilePath = fileProvider.path.pathsJoin( storageDirPath , self.storageFileName );
+  storageFilePath = fileProvider.path.s.join( storageDirPath , self.storageFileName );
 
   return storageFilePath;
 }
@@ -409,7 +409,7 @@ function storageFilePathToSaveGet( storageDirPath )
   else
   {
     storageFilePath = self.storageFileFromDirPath( storageDirPath );
-    // storageFilePath = fileProvider.path.pathsJoin( storageDirPath , self.storageFileName );
+    // storageFilePath = fileProvider.path.s.join( storageDirPath , self.storageFileName );
   }
 
   _.sure
