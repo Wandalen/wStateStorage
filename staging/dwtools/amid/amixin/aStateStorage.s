@@ -388,7 +388,7 @@ function storageFilePathToLoadGet( storageDirPath )
     () => 'Directory for storage file does not exist ' + _.strQuote( storageFilePath )
   );
 
-  return null;
+  return storageFilePath;
 }
 
 //
