@@ -24,12 +24,13 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools;
   _.include( 'wTesting' );
+  _.include( 'wFiles' );
 
   require( '../amixin/aStateStorage.s' );
 
 }
 
-var _ = wTools;
+var _ = _global_.wTools;
 
 // context
 
