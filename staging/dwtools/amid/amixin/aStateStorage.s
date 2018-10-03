@@ -52,13 +52,13 @@ Self.shortName = 'StateStorage';
 //
 // --
 
-function _storageFileSaveAct( o )
+function _storageFileWrite( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
   let logger = self.logger || _global_.logger;
 
-  _.routineOptions( _storageFileSaveAct, o );
+  _.routineOptions( _storageFileWrite, o );
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-self.storageToSave-}' );
   _.assert( arguments.length === 1 );
 
@@ -78,6 +78,7 @@ function _storageFileSaveAct( o )
 
   /* xxx */
 
+  debugger;
   if( self.storageSavingAsJs )
   fileProvider.fileWriteJs( o2 );
   else
@@ -85,7 +86,7 @@ function _storageFileSaveAct( o )
 
 }
 
-_storageFileSaveAct.defaults =
+_storageFileWrite.defaults =
 {
   storageFilePath : null,
   splitting : 0,
@@ -108,7 +109,7 @@ function _storageFileSave( o )
 
   o.storage = self.storageToSave( o );
 
-  self._storageFileSaveAct( o );
+  self._storageFileWrite( o );
 
 }
 
@@ -522,7 +523,7 @@ let Forbids =
   storageDirPathGet : 'storageDirPathGet',
   _storageLoad : '_storageLoad',
   _storageFileLoad : '_storageFileLoad',
-  // storageFilePath : 'storageFilePath',
+  _storageFileSaveAct : '_storageFileSaveAct',
 }
 
 let Accessors =
@@ -536,7 +537,7 @@ let Accessors =
 let Supplement =
 {
 
-  _storageFileSaveAct : _storageFileSaveAct,
+  _storageFileWrite : _storageFileWrite,
   _storageFileSave : _storageFileSave,
   _storageSave : _storageSave,
   storageSave : storageSave,
