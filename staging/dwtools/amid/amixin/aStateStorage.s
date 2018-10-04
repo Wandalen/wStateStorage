@@ -314,7 +314,7 @@ function storageLoad()
 //
 //   return storageDirPath;
 // }
-
+//
 //
 
 function storageFileFromDirPath( storageDirPath )
@@ -337,37 +337,37 @@ function storageFileFromDirPath( storageDirPath )
 }
 
 //
-
-function _storageFilePathGet( storageDirPath )
-{
-  let self = this;
-  let fileProvider = self.fileProvider;
-
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-
-  if( !self.storageFilePath )
-  return;
-
-  let storageFilePath = self.storageFilePath;
-
-  // let storageFilePath = self.storageFileFromDirPath( storageDirPath );
-  // debugger;
-
-  storageFilePath = _.map( storageFilePath, ( storageFilePath ) =>
-  {
-    if( fileProvider.directoryIs( storageFilePath ) )
-    return fileProvider.path.join( storageFilePath , self.storageFileName );
-    else
-    return storageFilePath;
-  });
-
-  return storageFilePath;
-}
-
+//
+// function _storageFilePathGet( storageDirPath )
+// {
+//   let self = this;
+//   let fileProvider = self.fileProvider;
+//
+//   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//
+//   if( !self.storageFilePath )
+//   return;
+//
+//   let storageFilePath = self.storageFilePath;
+//
+//   // let storageFilePath = self.storageFileFromDirPath( storageDirPath );
+//   // debugger;
+//
+//   storageFilePath = _.map( storageFilePath, ( storageFilePath ) =>
+//   {
+//     if( fileProvider.directoryIs( storageFilePath ) )
+//     return fileProvider.path.join( storageFilePath , self.storageFileName );
+//     else
+//     return storageFilePath;
+//   });
+//
+//   return storageFilePath;
+// }
+//
 //
 
-function storageFilePathToLoadGet( storageDirPath )
+function storageFilePathToLoadGet( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
@@ -375,71 +375,116 @@ function storageFilePathToLoadGet( storageDirPath )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  o = _.routineOptions( storageFilePathToLoadGet, o );
 
-  if( !storageDirPath && self.storageFilePath !== undefined )
-  storageDirPath = self.storageFilePath;
+  debugger;
 
-  let storageFilePath;
-  if( self.storageFilePath )
+  if( !o.storageDirPath && !o.storageFilePath && self.storageFilePath !== undefined )
   {
-    storageFilePath = self._storageFilePathGet( storageDirPath );
+    o.storageFilePath = self.storageFilePath;
+  }
+  // else
+  // {
+
+  // let storageFilePath;
+  // if( self.storageFilePath )
+  // {
+  //   storageFilePath = self._storageFilePathGet( o.storageDirPath );
+  // }
+  // else
+  // {
+    // o.storageDirPath = self.storageDirPathGet( o.storageDirPath );
+
+    if( !o.storageDirPath && o.storageFilePath )
+    o.storageDirPath = path.dir( o.storageFilePath );
+    o.storageDirPath = path.resolve( o.storageDirPath );
+
+  if( o.storageFilePath )
+  {
+    o.storageFilePath = path.resolve( o.storageDirPath, o.storageFilePath );
   }
   else
   {
-    // storageDirPath = self.storageDirPathGet( storageDirPath );
-    storageDirPath = path.resolve( storageDirPath );
+
     do
     {
-      storageFilePath =  fileProvider.path.join( storageDirPath , self.storageFileName );
-      if( fileProvider.fileExists( storageFilePath ) )
-      return storageFilePath;
-      storageDirPath = fileProvider.path.dir( storageDirPath );
+      o.storageFilePath =  path.join( o.storageDirPath , self.storageFileName );
+      if( fileProvider.fileExists( o.storageFilePath ) )
+      return o.storageFilePath;
+      o.storageDirPath = path.dir( o.storageDirPath );
     }
-    while( storageDirPath !== '/..' );
-  }
+    while( o.storageDirPath !== '/..' );
 
-  if( storageDirPath === '/..' )
-  return null;
+    if( o.storageDirPath === '/..' )
+    {
+      o.storageDirPath = null;
+      o.storageFilePath = null;
+      return o.storageFilePath;
+    }
+
+  }
 
   _.sure
   (
-    _.all( storageFilePath, ( storageFilePath ) => fileProvider.fileStat( storageFilePath ) ),
-    () => 'Storage file does not exist ' + _.strQuote( storageFilePath )
+    _.all( o.storageFilePath, ( storageFilePath ) => fileProvider.fileStat( storageFilePath ) ),
+    () => 'Storage file does not exist ' + _.strQuote( o.storageFilePath )
   );
 
-  return storageFilePath;
+  return o.storageFilePath;
+}
+
+storageFilePathToLoadGet.defaults =
+{
+  storageDirPath : null,
+  storageFilePath : null,
 }
 
 //
 
-function storageFilePathToSaveGet( storageDirPath )
+function storageFilePathToSaveGet( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
-  let storageFilePath = null;
+  // let storageFilePath = null;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  o = _.routineOptions( storageFilePathToSaveGet, o );
 
-  if( !storageDirPath && self.storageFilePath !== undefined )
-  storageDirPath = self.storageFilePath;
+  if( !o.storageDirPath && !o.storageFilePath && self.storageFilePath !== undefined )
+  {
+    o.storageFilePath = self.storageFilePath;
+  }
 
-  if( self.storageFilePath )
-  {
-    storageFilePath = self._storageFilePathGet( storageDirPath );
-  }
-  else
-  {
-    storageFilePath = self.storageFileFromDirPath( storageDirPath );
-  }
+    if( !o.storageDirPath && o.storageFilePath )
+    o.storageDirPath = path.dir( o.storageFilePath );
+
+  // if( !o.storageDirPath && self.storageFilePath !== undefined )
+  // o.storageDirPath = self.storageFilePath;
+
+  // if( self.o.storageFilePath )
+  // {
+  //   o.storageFilePath = self._storageFilePathGet( o.storageDirPath );
+  // }
+  // else
+  // {
+    if( !o.storageFilePath )
+    o.storageFilePath = self.storageFileFromDirPath( o.storageDirPath );
+  // }
 
   _.sure
   (
-    _.all( storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( fileProvider.path.dir( storageFilePath ) ) ),
-    () => 'Directory for storage file does not exist ' + _.strQuote( storageFilePath )
+    _.all( o.storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( fileProvider.path.dir( o.storageFilePath ) ) ),
+    () => 'Directory for storage file does not exist ' + _.strQuote( o.storageFilePath )
   );
 
-  return storageFilePath;
+  return o.storageFilePath;
+}
+
+storageFilePathToSaveGet.defaults =
+{
+  storageDirPath : null,
+  storageFilePath : null,
 }
 
 //
@@ -534,6 +579,7 @@ let Forbids =
   _storageLoad : '_storageLoad',
   _storageFileLoad : '_storageFileLoad',
   _storageFileSaveAct : '_storageFileSaveAct',
+  _storageFilePathGet : '_storageFilePathGet',
 }
 
 let Accessors =
@@ -557,7 +603,7 @@ let Supplement =
 
   // storageDirPathGet : storageDirPathGet,
   storageFileFromDirPath : storageFileFromDirPath,
-  _storageFilePathGet : _storageFilePathGet,
+  // _storageFilePathGet : _storageFilePathGet,
 
   storageFilePathToLoadGet : storageFilePathToLoadGet,
   storageFilePathToSaveGet : storageFilePathToSaveGet,
