@@ -24,7 +24,6 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools;
   _.include( 'wTesting' );
-  _.include( 'wFiles' );
 
   require( '../amixin/aStateStorage.s' );
 
@@ -32,10 +31,21 @@ if( typeof module !== 'undefined' )
 
 var _ = _global_.wTools;
 
+// --
 // context
+// --
 
 function sampleClassMake( o )
 {
+
+  _.routineOptions( sampleClassMake, arguments );
+
+  if( !o.fileProvider )
+  {
+    let filesTree = { dir1 : { dir2 : { '.storage' : "{ random : 0.6397020320139724 }", dir3 : {} } } }
+    o.fileProvider = new _.FileProvider.Extract({ filesTree : filesTree });
+  }
+
   function SampleClass( o )
   {
     return _.instanceConstructor( SampleClass, this, arguments );
@@ -43,18 +53,12 @@ function sampleClassMake( o )
 
   function init( o )
   {
-    let sample = this;
-    _.instanceInit( sample );
-
-    if( o )
-    sample.copy( o );
+    _.instanceInit( this );
   }
 
   let Associates =
   {
-    opened : 0,
     storageFileName :  o.storageFileName,
-    storageFilePath :  o.storageFilePath,
     fileProvider :  _.define.own( o.fileProvider ),
   }
 
@@ -63,7 +67,7 @@ function sampleClassMake( o )
     init : init,
     storageLoaded : o.storageLoaded,
     storageToSave : o.storageToSave,
-    Composes : o.Composes,
+    Composes : o.fields,
     Associates : Associates,
   }
 
@@ -74,89 +78,286 @@ function sampleClassMake( o )
   });
 
   _.StateStorage.mixin( SampleClass );
-  _.Copyable.mixin( SampleClass );
 
   return SampleClass;
 }
 
-// tests
-
-function trivial( test )
+sampleClassMake.defaults =
 {
-  let filesTree = { 'storage' : "{ random : 0.6397020320139724 }" }
-  let fileProvider = new _.FileProvider.Extract({ filesTree : filesTree });
+  storageFileName : null,
+  storageLoaded : null,
+  storageToSave : null,
+  fields : null,
+  fileProvider : null,
+}
 
-  function SomeClass( o )
-  {
-    return _.instanceConstructor( SomeClass, this, arguments );
-  }
+// --
+// tests
+// --
 
-  function init( o )
-  {
-    let sample = this;
-    _.instanceInit( sample );
-  }
+function withStorageFilePath( test )
+{
+  let context = this;
 
-  function storageLoaded( storage, op )
+  function storageLoaded( o )
   {
     let self = this;
-    let result = _.StateStorage.prototype.storageLoaded.call( self, storage, op );
-
-    self.random = storage.random;
-
+    let result = _.StateStorage.prototype.storageLoaded.call( self, o );
+    self.random = o.storage.random;
     return result;
   }
 
-  function storageToSave( op )
+  function storageToSave( o )
   {
     let self = this;
-
     let storage = { random : self.random };
-
     return storage;
   }
 
-  let Associates =
+  let Composes =
   {
-    opened : 0,
-    storageFileName :  'storage',
-    storageFilePath :  '/storage',
-    fileProvider :  _.define.own( fileProvider ),
+    storageFilePath :  '/dir1/dir2/.storage',
   }
 
-  let Extend =
-  {
-    init : init,
-    storageLoaded : storageLoaded,
-    storageToSave : storageToSave,
-    Associates : Associates,
-  }
-
-  _.classDeclare
+  var SampleClass = context.sampleClassMake
   ({
-    cls : SomeClass,
-    extend : Extend,
+    storageFileName : '.storage',
+    storageToSave : storageToSave,
+    storageLoaded : storageLoaded,
+    fields : Composes,
   });
-
-  _.StateStorage.mixin( SomeClass );
 
   /* */
 
-  let sample = new SomeClass();
+  let sample = new SampleClass();
   test.identical( sample.random, undefined );
+
+  /* */
+
+  test.case = 'defined storageFilePath cd:/';
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+
+  test.description = 'storageLoad';
   sample.storageLoad();
-  var expected = sample.fileProvider.fileReadJs( sample.storageFilePath );
-  test.identical( sample.random, expected.random );
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePathToLoadGet() );
+  var expected = sample.storageToSave();
+  test.identical( got, expected )
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+
+  test.description = 'storageSave';
   sample.random = Math.random();
   sample.storageSave();
   var got = sample.fileProvider.fileReadJs( sample.storageFilePath );
   var expected = { random : sample.random };
   test.identical( got, expected )
-  // console.log( 'sample.random', sample.storageFilePathToLoadGet(), sample.random );
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
 
   /* */
 
-  test.identical( 1,1 );
+  test.case = 'storageFilePath:null cd:/';
+
+  sample.storageFilePath = null;
+  sample.random = undefined;
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), null );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, null );
+
+  test.description = 'storageLoad';
+  test.shouldThrowErrorSync( () =>
+  {
+    sample.storageLoad();
+  });
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), null );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, null );
+
+  test.description = 'storageSave';
+  sample.random = Math.random();
+  sample.storageSave();
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePath );
+  var expected = sample.storageToSave();
+  test.identical( got, expected )
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/.storage' );
+
+  /* */
+
+  test.case = 'storageFilePath:null cd:/dir1/dir2/dir3';
+
+  sample.storageFilePath = null;
+  sample.random = undefined;
+  sample.fileProvider.path.current( '/dir1/dir2/dir3' );
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, null );
+
+  test.description = 'storageLoad';
+  sample.storageLoad();
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePathToLoadGet() );
+  var expected = sample.storageToSave();
+  test.identical( got, expected );
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+
+  test.description = 'storageSave';
+  sample.random = Math.random();
+  sample.storageSave();
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePath );
+  var expected = { random : sample.random };
+  test.identical( got, expected )
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+
+  test.description = 'storageSave';
+  sample.storageFilePath = null;
+  sample.random = Math.random();
+  sample.storageSave();
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePath );
+  var expected = { random : sample.random };
+  test.identical( got, expected )
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, '/dir1/dir2/dir3/.storage' );
+
+}
+
+//
+
+function withoutStorageFilePath( test )
+{
+  let context = this;
+
+  function storageLoaded( o )
+  {
+    let self = this;
+    let result = _.StateStorage.prototype.storageLoaded.call( self, o );
+    self.random = o.storage.random;
+    return result;
+  }
+
+  function storageToSave( o )
+  {
+    let self = this;
+    let storage = { random : self.random };
+    return storage;
+  }
+
+  let Composes =
+  {
+  }
+
+  var SampleClass = context.sampleClassMake
+  ({
+    storageFileName : '.storage',
+    storageToSave : storageToSave,
+    storageLoaded : storageLoaded,
+    fields : Composes,
+  });
+
+  /* */
+
+  let sample = new SampleClass();
+  sample.fileProvider.path.current( '/dir1/dir2/dir3' );
+  test.identical( sample.random, undefined );
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, undefined );
+
+  test.description = 'storageLoad';
+  sample.storageLoad();
+  var expected = sample.fileProvider.fileReadJs( sample.storageFilePathToLoadGet() );
+  test.identical( sample.storageToSave(), expected );
+  sample.random = Math.random();
+
+  test.description = 'storageSave';
+  sample.storageSave();
+  var got = sample.fileProvider.fileReadJs( sample.storageFilePathToLoadGet() );
+  var expected = { random : sample.random };
+  test.identical( got, expected )
+
+  test.description = 'storageFilePathToLoadGet';
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePathToSaveGet';
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+
+  test.description = 'storageFilePath';
+  test.identical( sample.storageFilePath, undefined );
 
 }
 
@@ -166,7 +367,7 @@ function storageSave( test )
 {
   var self = this;
 
-  function storageToSave( op )
+  function storageToSave( o )
   {
     let self = this;
     let storage = _.mapExtend( null, _.mapOnly( self, Composes ) );
@@ -174,41 +375,20 @@ function storageSave( test )
   }
   let Composes =
   {
-    dev : null,
-    mode : null,
-    nlink : null,
-    uid : null,
-    gid : null,
-    rdev : null,
     ino : null,
-    size : null,
-    atime : null,
-    mtime : null,
-    ctime : null,
-    birthtime : null,
   }
+
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : '.storage',
-    storageFilePath : '/',
     storageToSave : storageToSave,
     fileProvider : new _.FileProvider.Extract(),
-    Composes : Composes,
+    fields : Composes,
   });
+
   var o =
   {
-    "dev" : 2523469189,
-    "mode" : 33206,
-    "nlink" : 1,
-    "uid" : 0,
-    "gid" : 0,
-    "rdev" : 0,
     "ino" : 3659174697525816,
-    "size" : 4263,
-    "atime" : new Date( '2018-08-23T18:46:22.481Z' ),
-    "mtime" : new Date( '2018-10-03T15:25:57.946Z' ),
-    "ctime" : new Date( '2018-10-03T15:25:57.946Z' ),
-    "birthtime" : new Date( '2018-08-23T18:46:22.481Z' )
   }
 
   /* */
@@ -220,7 +400,7 @@ function storageSave( test )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'storageFilePath does not exist'
   var classInstance = new sampleClass( _.mapExtend( null, o, { storageFilePath : '/storageFilePath' } ) );
@@ -229,7 +409,7 @@ function storageSave( test )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'storageFilePath is terminal file'
   var classInstance = new sampleClass( _.mapExtend( null, o, { storageFilePath : '/storageFilePath' } ) );
@@ -239,7 +419,7 @@ function storageSave( test )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'storageFilePath is directory'
   var classInstance = new sampleClass( _.mapExtend( null, o, { storageFilePath : '/storageFilePath' } ) );
@@ -250,7 +430,7 @@ function storageSave( test )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'storageFilePath is array of paths, one of paths does not exist'
   var o2 =
@@ -307,59 +487,36 @@ function storageLoad( test )
 {
   var self = this;
 
-  function storageLoaded( storage, op )
+  function storageLoaded( o )
   {
     let self = this;
-    let result = _.StateStorage.prototype.storageLoaded.call( self, storage, op );
-
-    self.copy( storage );
-
-    return storage;
+    let result = _.StateStorage.prototype.storageLoaded.call( self, o );
+    self.ino = o.storage;
+    return o.storage;
   }
-  function storageToSave( op )
+  function storageToSave( o )
   {
     let self = this;
-    let storage = _.mapExtend( null, _.mapOnly( self, Composes ) );
+    let storage = _.mapOnly( self, Composes );
     return storage;
   }
+
   let Composes =
   {
-    dev : null,
-    mode : null,
-    nlink : null,
-    uid : null,
-    gid : null,
-    rdev : null,
     ino : null,
-    size : null,
-    atime : null,
-    mtime : null,
-    ctime : null,
-    birthtime : null,
   }
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : '.storage',
-    storageFilePath : '/',
+    // storageFilePath : '/',
     storageLoaded : storageLoaded,
     storageToSave : storageToSave,
     fileProvider : new _.FileProvider.Extract(),
-    Composes : Composes,
+    fields : Composes,
   });
   var o =
   {
-    "dev" : 2523469189,
-    "mode" : 33206,
-    "nlink" : 1,
-    "uid" : 0,
-    "gid" : 0,
-    "rdev" : 0,
     "ino" : 3659174697525816,
-    "size" : 4263,
-    "atime" : new Date( '2018-08-23T18:46:22.481Z' ),
-    "mtime" : new Date( '2018-10-03T15:25:57.946Z' ),
-    "ctime" : new Date( '2018-10-03T15:25:57.946Z' ),
-    "birthtime" : new Date( '2018-08-23T18:46:22.481Z' )
   }
 
   var mainInstance = new sampleClass( o );
@@ -375,9 +532,11 @@ function storageLoad( test )
   test.identical( got, Composes );
   classInstance.storageLoad();
   var got = _.mapOnly( classInstance, o );
+  debugger;
   test.identical( got, o );
+  debugger;
 
-  //
+  /* */
 
   test.case = 'load using only storageFileName'
   var o2 =
@@ -391,7 +550,7 @@ function storageLoad( test )
   var got = _.mapOnly( classInstance, o );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'load using only storageFilePath'
   var o2 =
@@ -405,7 +564,7 @@ function storageLoad( test )
   var got = _.mapOnly( classInstance, o );
   test.identical( got, o );
 
-  //
+  /* */
 
   test.case = 'load using only storageFilePath, file is a directory'
   var o2 =
@@ -417,7 +576,7 @@ function storageLoad( test )
   classInstance.fileProvider.directoryMake( o2.storageFilePath );
   test.shouldThrowError( () => classInstance.storageLoad() );
 
-  //
+  /* */
 
   test.case = 'load using only storageFilePath, file is a regular file'
   var o2 =
@@ -474,7 +633,6 @@ var Self =
 
   name : 'Tools/mid/StateStorage',
   silencing : 1,
-  // verbosity : 1,
 
   context :
   {
@@ -483,10 +641,12 @@ var Self =
 
   tests :
   {
-    trivial : trivial,
+
+    withStorageFilePath : withStorageFilePath,
+    withoutStorageFilePath : withoutStorageFilePath,
+
     storageSave : storageSave,
     storageLoad : storageLoad,
-
 
   },
 

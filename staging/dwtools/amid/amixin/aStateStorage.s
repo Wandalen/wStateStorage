@@ -33,6 +33,7 @@ if( typeof module !== 'undefined' )
   let _ = _global_.wTools;
 
   _.include( 'wProto' );
+  _.include( 'wFiles' );
 
 }
 
@@ -56,6 +57,7 @@ function _storageFileWrite( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
+  let path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
   _.routineOptions( _storageFileWrite, o );
@@ -128,6 +130,7 @@ function _storageFilesWrite( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
+  let path = fileProvider.path;
 
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
@@ -218,7 +221,7 @@ function _storageFileRead( o )
     logger.log( ' . loading config ' + title + ' at ' + _.strQuote( o.storageFilePath ) );
   }
 
-  o.read = fileProvider.fileReadJs( o.storageFilePath );
+  o.storage = fileProvider.fileReadJs( o.storageFilePath );
 
   // let result = self.storageLoaded( read, o );
 
@@ -280,7 +283,7 @@ function storageLoad()
   let storageFilePath = self.storageFilePathToLoadGet();
 
   _.assert( arguments.length === 0 );
-  _.assert( !!storageFilePath );
+  _.sure( !!storageFilePath, 'Cant load storage : not found' );
 
   // if( !storageFilePath )
   // return storageFilePath;
@@ -288,13 +291,23 @@ function storageLoad()
   // if( self.storageFilePath !== undefined )
   // self.storageFilePath = storageFilePath;
 
-  let read = self._storageFilesRead({ storageFilePath : storageFilePath });
+  let storages = self._storageFilesRead({ storageFilePath : storageFilePath });
   let result = true;
+  let storageFilePaths = [];
 
-  _.each( read, ( op, storageFilePath ) =>
+  _.each( storages, ( op, storageFilePath ) =>
   {
-    result = self.storageLoaded( op ) && result;
+    let loaded = self.storageLoaded( op );
+    result = loaded && result;
+    if( loaded )
+    storageFilePaths.push( storageFilePath );
   });
+
+  if( storageFilePaths.length < 2 )
+  storageFilePaths = storageFilePaths[ 0 ] || null;
+
+  if( self.storageFilePath !== undefined )
+  self.storageFilePath = storageFilePaths;
 
   return result;
 }
@@ -321,7 +334,7 @@ function storageFileFromDirPath( storageDirPath )
 {
   let self = this;
   let fileProvider = self.fileProvider;
-  let path = self.path;
+  let path = fileProvider.path;
   let storageFilePath = null;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -383,21 +396,10 @@ function storageFilePathToLoadGet( o )
   {
     o.storageFilePath = self.storageFilePath;
   }
-  // else
-  // {
 
-  // let storageFilePath;
-  // if( self.storageFilePath )
-  // {
-  //   storageFilePath = self._storageFilePathGet( o.storageDirPath );
-  // }
-  // else
-  // {
-    // o.storageDirPath = self.storageDirPathGet( o.storageDirPath );
-
-    if( !o.storageDirPath && o.storageFilePath )
-    o.storageDirPath = path.dir( o.storageFilePath );
-    o.storageDirPath = path.resolve( o.storageDirPath );
+  if( !o.storageDirPath && o.storageFilePath )
+  o.storageDirPath = path.dir( o.storageFilePath );
+  o.storageDirPath = path.resolve( o.storageDirPath );
 
   if( o.storageFilePath )
   {
@@ -410,7 +412,7 @@ function storageFilePathToLoadGet( o )
     {
       o.storageFilePath =  path.join( o.storageDirPath , self.storageFileName );
       if( fileProvider.fileExists( o.storageFilePath ) )
-      return o.storageFilePath;
+      break;
       o.storageDirPath = path.dir( o.storageDirPath );
     }
     while( o.storageDirPath !== '/..' );
@@ -445,7 +447,7 @@ function storageFilePathToSaveGet( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
-  // let storageFilePath = null;
+  let path = fileProvider.path;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
@@ -456,25 +458,17 @@ function storageFilePathToSaveGet( o )
     o.storageFilePath = self.storageFilePath;
   }
 
-    if( !o.storageDirPath && o.storageFilePath )
-    o.storageDirPath = path.dir( o.storageFilePath );
+  if( !o.storageDirPath && o.storageFilePath )
+  o.storageDirPath = path.dir( o.storageFilePath );
+  o.storageDirPath = path.resolve( o.storageDirPath );
 
-  // if( !o.storageDirPath && self.storageFilePath !== undefined )
-  // o.storageDirPath = self.storageFilePath;
-
-  // if( self.o.storageFilePath )
-  // {
-  //   o.storageFilePath = self._storageFilePathGet( o.storageDirPath );
-  // }
-  // else
-  // {
-    if( !o.storageFilePath )
-    o.storageFilePath = self.storageFileFromDirPath( o.storageDirPath );
-  // }
+  if( !o.storageFilePath )
+  o.storageFilePath = self.storageFileFromDirPath( o.storageDirPath );
+  o.storageFilePath = path.resolve( o.storageDirPath, o.storageFilePath );
 
   _.sure
   (
-    _.all( o.storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( fileProvider.path.dir( o.storageFilePath ) ) ),
+    _.all( o.storageFilePath, ( storageFilePath ) => fileProvider.directoryIs( path.dir( o.storageFilePath ) ) ),
     () => 'Directory for storage file does not exist ' + _.strQuote( o.storageFilePath )
   );
 
