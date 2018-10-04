@@ -61,6 +61,9 @@ function _storageFileWrite( o )
   _.routineOptions( _storageFileWrite, o );
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-self.storageToSave-}' );
   _.assert( arguments.length === 1 );
+  _.assert( path.isAbsolute( o.storageFilePath ) );
+  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.routineIs( self.storageToSave ) );
 
   if( logger.verbosity >= 3 )
   {
@@ -95,33 +98,33 @@ _storageFileWrite.defaults =
 
 //
 
-function _storageFileSave( o )
-{
-  let self = this;
-  let fileProvider = self.fileProvider;
-  let logger = self.logger || _global_.logger;
-
-  _.assert( fileProvider.path.isAbsolute( o.storageFilePath ) );
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.routineOptions( _storageFileSave, arguments );
-  _.assert( _.routineIs( self.storageToSave ) );
-
-  o.storage = self.storageToSave( o );
-
-  self._storageFileWrite( o );
-
-}
-
-_storageFileSave.defaults =
-{
-  storageFilePath : null,
-  splitting : 0,
-}
+// function _storageFileWrite( o )
+// {
+//   let self = this;
+//   let fileProvider = self.fileProvider;
+//   let path = fileProvider.path;
+//   let logger = self.logger || _global_.logger;
+//
+//   _.assert( path.isAbsolute( o.storageFilePath ) );
+//   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.routineOptions( _storageFileWrite, arguments );
+//   _.assert( _.routineIs( self.storageToSave ) );
+//
+//   o.storage = self.storageToSave( o );
+//   self._storageFileWrite( o );
+//
+// }
+//
+// _storageFileWrite.defaults =
+// {
+//   storageFilePath : null,
+//   splitting : 0,
+// }
 
 //
 
-function _storageSave( o )
+function _storageFilesWrite( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
@@ -131,28 +134,37 @@ function _storageSave( o )
 
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.routineOptions( _storageSave, o );
+  _.routineOptions( _storageFilesWrite, o );
 
   o.storageFilePath = o.storageFilePath || self.storageFilePathToSaveGet();
 
-  if( _.arrayIs( o.storageFilePath ) )
-  for( let p = 0 ; p < o.storageFilePath.length ; p++ )
-  self._storageFileSave
-  ({
-    storageFilePath : o.storageFilePath[ p ],
-    splitting : 1,
-  })
-  else
-  self._storageFileSave
-  ({
-    storageFilePath : o.storageFilePath,
-    splitting : 0,
+  // if( _.arrayIs( o.storageFilePath ) )
+  // for( let p = 0 ; p < o.storageFilePath.length ; p++ )
+  // {
+  //   self._storageFileWrite
+  //   ({
+  //     storageFilePath : o.storageFilePath[ p ],
+  //     splitting : 1,
+  //   })
+  // }
+  // else
+
+  debugger;
+  let isVector = _.arrayIs( o.storageFilePath );
+  _.each( o.storageFilePath, ( storageFilePath ) =>
+  {
+    let op = Object.create( null );
+    op.storageFilePath = o.storageFilePath;
+    op.splitting = isVector;
+    op.storage = self.storageToSave( o );
+    self._storageFileWrite( op );
   });
+  debugger;
 
   return true;
 }
 
-_storageSave.defaults =
+_storageFilesWrite.defaults =
 {
   storageFilePath : null,
 }
@@ -162,9 +174,7 @@ _storageSave.defaults =
 function storageSave()
 {
   let self = this;
-  // debugger;
   let storageFilePath = self.storageFilePathToSaveGet();
-  // debugger;
 
   _.assert( arguments.length === 0 );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
@@ -172,13 +182,13 @@ function storageSave()
   if( self.storageFilePath !== undefined )
   self.storageFilePath = storageFilePath;
 
-  return self._storageSave({ storageFilePath : storageFilePath });
+  return self._storageFilesWrite({ storageFilePath : storageFilePath });
 }
 
 // {
 //   let self = this;
 //   _.assert( arguments.length === 0 );
-//   return self._storageSave();
+//   return self._storageFilesWrite();
 // }
 
 //
@@ -538,8 +548,7 @@ let Supplement =
 {
 
   _storageFileWrite : _storageFileWrite,
-  _storageFileSave : _storageFileSave,
-  _storageSave : _storageSave,
+  _storageFilesWrite : _storageFilesWrite,
   storageSave : storageSave,
 
   _storageFileRead : _storageFileRead,
