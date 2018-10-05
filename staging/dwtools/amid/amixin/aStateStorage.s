@@ -223,13 +223,15 @@ function _storageFilesRead( o )
   if( !_.mapIs( o ) )
   o = { storageDirPath : o }
 
-  o.storageDirPath = path.resolve( o.storageDirPath || '.' );
+  // o.storageDirPath = path.resolve( o.storageDirPath || '.' );
+  o.storageDirPath = o.storageDirPath || '.';
   o.storageFilePath = o.storageFilePath || self.storageFileName;
   o.storageFilePath = path.s.join( o.storageDirPath, o.storageFilePath );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( !!o.storageFilePath );
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'expects absolute paths {-o.storageFilePath-}' );
   _.routineOptions( _storageFilesRead, o );
 
   let result = Object.create( null );
@@ -240,7 +242,6 @@ function _storageFilesRead( o )
     op.storageFilePath = storageFilePath;
     self._storageFileRead( op );
     result[ op.storageFilePath ] = op;
-    // result = self.storageLoaded( read, op ) && result;
   });
 
   return result;
@@ -523,6 +524,25 @@ function storageIs( storage )
   return true;
 }
 
+//
+
+function storageDefaultGet()
+{
+  let self = this;
+  _.assert( arguments.length === 0 );
+  let op = Object.create( null );
+  op.storage = self.storageToSave( op );
+
+  let defaults = self.Self.fieldsOfRelationsGroups;
+  for( let s in op.storage )
+  {
+    _.assert( defaults[ s ] !== undefined, 'Not clear what is default value for field', s );
+    op.storage[ s ] = defaults[ s ];
+  }
+
+  return op;
+}
+
 // --
 // relations
 // --
@@ -609,6 +629,7 @@ let Supplement =
   // etc
 
   storageIs : storageIs,
+  storageDefaultGet : storageDefaultGet,
 
   //
 
