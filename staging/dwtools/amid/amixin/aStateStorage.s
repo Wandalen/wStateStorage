@@ -61,7 +61,7 @@ function _storageFileWrite( o )
   let logger = self.logger || _global_.logger;
 
   _.routineOptions( _storageFileWrite, o );
-  _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-self.storageToSave-}' );
+  _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-o.storage-}' );
   _.assert( arguments.length === 1 );
   _.assert( path.isAbsolute( o.storageFilePath ) );
   _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
@@ -149,6 +149,25 @@ function storageSave()
   self.storageFilePathApply( storageFilePath );
 
   return result;
+}
+
+//
+
+function storageToSave( o )
+{
+  let self = this;
+  let storage = self.storage;
+  _.assert( storage !== undefined, '{-self.storage-} is not defined' );
+  _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.toStrShort( storage ) );
+  _.routineOptions( storageToSave, arguments );
+  return storage;
+}
+
+storageToSave.defaults =
+{
+  storageFilePath : null,
+  splitting : 0,
+  storage : null,
 }
 
 // --
@@ -243,11 +262,11 @@ function storageLoad()
   _.assert( arguments.length === 0 );
   _.sure( !!storageFilePath, 'Cant load storage : not found' );
 
-  let storages = self._storageFilesRead({ storageFilePath : storageFilePath });
+  let read = self._storageFilesRead({ storageFilePath : storageFilePath });
   let result = true;
   let storageFilePaths = [];
 
-  _.each( storages, ( op, storageFilePath ) =>
+  _.each( read, ( op, storageFilePath ) =>
   {
     let loaded = self.storageLoaded( op );
     result = loaded && result;
@@ -261,6 +280,30 @@ function storageLoad()
   self.storageFilePathApply( storageFilePath );
 
   return result;
+}
+
+//
+
+function storageLoaded( o )
+{
+  let self = this;
+  let fileProvider = self.fileProvider;
+
+  _.sure( self.storageIs( o.storage ), () => 'Strange storage : ' + _.toStrShort( o.storage ) );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.storageFilePath ) );
+
+  if( self.storagesLoaded !== undefined )
+  {
+    debugger;
+    _.assert( _.arrayIs( self.storagesLoaded ), () => 'expects {-self.storagesLoaded-}, but got ' + _.strTypeOf( self.storagesLoaded ) );
+    self.storagesLoaded.push({ filePath : o.storageFilePath });
+  }
+
+  if( self.storage !== undefined )
+  self.storage = _.mapExtend( self.storage, o.storage );
+
+  return true;
 }
 
 // --
@@ -467,7 +510,9 @@ storageFilePathToSaveGet.defaults =
   storageFilePath : null,
 }
 
-//
+// --
+// etc
+// --
 
 function storageIs( storage )
 {
@@ -476,43 +521,6 @@ function storageIs( storage )
   if( !_.objectIs( storage ) )
   return false;
   return true;
-}
-
-//
-
-/*
-!!! move out
-*/
-
-function storageLoaded( o )
-{
-  let self = this;
-  let fileProvider = self.fileProvider;
-
-  _.sure( self.storageIs( o.storage ), () => 'Strange storage : ' + _.toStrShort( o.storage ) );
-  _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.storageFilePath ) );
-
-  if( self.storagesLoaded !== undefined )
-  {
-    _.assert( _.arrayIs( self.storagesLoaded ), () => 'expects {-self.storagesLoaded-}, but got ' + _.strTypeOf( self.storagesLoaded ) );
-    self.storagesLoaded.push({ filePath : o.storageFilePath });
-  }
-
-  if( self.storage !== undefined )
-  self.storage = _.mapExtend( self.storage, o.storage );
-
-  return true;
-}
-
-//
-
-function storageToSave( op )
-{
-  let self = this;
-  let storage = self.storage;
-  _.assert( storage !== undefined, '{-self.storage-} is not defined' );
-  return storage;
 }
 
 // --
@@ -529,12 +537,12 @@ let CouldHave =
 {
   storageFilePath : null,
   storageDirPath : null,
+  storage : null,
+  storagesLoaded : null,
 }
 
 let Composes =
 {
-  /* storageFileName : '.storage', */
-  /* storageFilePath : null, */
   storageSavingAsJs : 1,
 }
 
@@ -544,14 +552,10 @@ let Aggregates =
 
 let Associates =
 {
-  /* fileProvider : null, */
 }
 
 let Restricts =
 {
-  /* storageToSave : null, */
-  /* storagesLoaded : _.define.own( [] ), */
-  /* opened : 0, */
 }
 
 let Statics =
@@ -585,12 +589,14 @@ let Supplement =
   _storageFileWrite : _storageFileWrite,
   _storageFilesWrite : _storageFilesWrite,
   storageSave : storageSave,
+  storageToSave : storageToSave,
 
   // load
 
   _storageFileRead : _storageFileRead,
   _storageFilesRead : _storageFilesRead,
   storageLoad : storageLoad,
+  storageLoaded : storageLoaded,
 
   // path
 
@@ -600,11 +606,9 @@ let Supplement =
   storageFilePathToLoadGet : storageFilePathToLoadGet,
   storageFilePathToSaveGet : storageFilePathToSaveGet,
 
-  //
+  // etc
 
   storageIs : storageIs,
-  storageLoaded : storageLoaded,
-  storageToSave : storageToSave,
 
   //
 
