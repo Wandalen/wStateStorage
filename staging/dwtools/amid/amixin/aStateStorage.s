@@ -64,7 +64,7 @@ function _storageFileWrite( o )
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-o.storage-}' );
   _.assert( arguments.length === 1 );
   _.assert( path.isAbsolute( o.storageFilePath ) );
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
   _.assert( _.routineIs( self.storageToSave ) );
 
   if( logger.verbosity >= 3 )
@@ -108,7 +108,7 @@ function _storageFilesWrite( o )
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
 
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.routineOptions( _storageFilesWrite, o );
 
@@ -230,7 +230,7 @@ function _storageFilesRead( o )
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( !!o.storageFilePath );
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
   _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'expects absolute paths {-o.storageFilePath-}' );
   _.routineOptions( _storageFilesRead, o );
 
@@ -346,7 +346,7 @@ function storageFileFromDirPath( storageDirPath )
   let storageFilePath = null;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
 
   // storageDirPath = path.s.resolve( storageDirPath );
   storageFilePath = path.s.join( storageDirPath , self.storageFileName );
@@ -363,7 +363,7 @@ function storageFilePathGet( o )
   let path = fileProvider.path;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.strIsNotEmpty( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
   o = _.routineOptions( storageFilePathGet, o );
 
   /* */
