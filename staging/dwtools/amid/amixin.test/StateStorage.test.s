@@ -209,10 +209,7 @@ function withStorageFilePath( test )
   test.identical( sample.storageFilePath, null );
 
   test.description = 'storageLoad';
-  test.shouldThrowErrorSync( () =>
-  {
-    sample.storageLoad();
-  });
+  test.identical( sample.storageLoad(), false )
 
   test.description = 'storageFilePathToLoadGet';
   test.identical( sample.storageFilePathToLoadGet(), null );
@@ -744,7 +741,7 @@ function storageLoad( test )
   test.open( 'try load not existing storage' );
 
   var classInstance = new sampleClass( { storageFilePath : '/storageFilePath' } );
-  test.shouldThrowError( () => classInstance.storageLoad() );
+  test.identical( classInstance.storageLoad(), false );
 
   test.case = 'try to provide undefined paths'
   var o2 =
