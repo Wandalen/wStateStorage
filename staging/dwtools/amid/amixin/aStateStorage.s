@@ -255,13 +255,20 @@ _storageFilesRead.defaults =
 
 //
 
+/*
+should not throw error if cant load file, but return false
+*/
+
 function storageLoad()
 {
   let self = this;
   let storageFilePath = self.storageFilePathToLoadGet();
 
   _.assert( arguments.length === 0 );
-  _.sure( !!storageFilePath, 'Cant load storage : not found' );
+  // _.sure( !!storageFilePath, 'Cant load storage : not found' );
+
+  if( !storageFilePath )
+  return false;
 
   let read = self._storageFilesRead({ storageFilePath : storageFilePath });
   let result = true;
