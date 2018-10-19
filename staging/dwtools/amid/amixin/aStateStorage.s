@@ -158,7 +158,8 @@ function storageToSave( o )
   let self = this;
   let storage = self.storage;
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
-  _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.toStrShort( storage ) );
+  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.toStrShort( storage ) );
+  self.storageCheck( storage );
   _.routineOptions( storageToSave, arguments );
   return storage;
 }
@@ -297,8 +298,9 @@ function storageLoaded( o )
   let self = this;
   let fileProvider = self.fileProvider;
 
-  _.sure( self.storageIs( o.storage ), () => 'Strange storage : ' + _.toStrShort( o.storage ) );
+  self.storageCheck( o.storage );
   _.assert( arguments.length === 1 );
+  _.routineOptions( storageLoaded, arguments );
 
   if( self.storagesLoaded !== undefined )
   {
@@ -312,6 +314,12 @@ function storageLoaded( o )
   self.storage = _.mapExtend( self.storage, o.storage );
 
   return true;
+}
+
+storageLoaded.defaults =
+{
+  storage : null,
+  storageFilePath : null,
 }
 
 // --
@@ -533,6 +541,16 @@ function storageIs( storage )
 
 //
 
+function storageCheck( storage )
+{
+  let self = this;
+  _.assert( arguments.length === 1 );
+  if( !self.storageIs( storage ) )
+  throw _.err( 'Strange storage :\n' + _.toStr( storage, { levels : 2, multiline : 1, wrap : 0 } ) );
+}
+
+//
+
 function storageDefaultGet()
 {
   let self = this;
@@ -638,6 +656,7 @@ let Supplement =
   // etc
 
   storageIs : storageIs,
+  storageCheck : storageCheck,
   storageDefaultGet : storageDefaultGet,
 
   //
