@@ -120,7 +120,7 @@ function _storageFilesWrite( o )
     let op = Object.create( null );
     op.storageFilePath = storageFilePath;
     op.splitting = isVector;
-    op.storage = self.storageToSave( o );
+    op.storage = self.storageToSave( op );
     self._storageFileWrite( op );
   });
 
