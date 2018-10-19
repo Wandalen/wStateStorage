@@ -299,12 +299,12 @@ function storageLoaded( o )
 
   _.sure( self.storageIs( o.storage ), () => 'Strange storage : ' + _.toStrShort( o.storage ) );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.storageFilePath ) );
 
   if( self.storagesLoaded !== undefined )
   {
     debugger;
-    _.assert( _.arrayIs( self.storagesLoaded ), () => 'expects {-self.storagesLoaded-}, but got ' + _.strTypeOf( self.storagesLoaded ) );
+    _.assert( _.arrayIs( self.storagesLoaded ), () => 'Expects array {-self.storagesLoaded-}, but got ' + _.strTypeOf( self.storagesLoaded ) );
+    _.assert( _.strIs( o.storageFilePath ), 'Expects string {-self.storagesLoaded-}' );
     self.storagesLoaded.push({ filePath : o.storageFilePath });
   }
 
@@ -363,7 +363,7 @@ function storageFileFromDirPath( storageDirPath )
 
 //
 
-function storageFilePathGet( o )
+function storagePathGet( o )
 {
   let self = this;
   let fileProvider = self.fileProvider;
@@ -371,7 +371,7 @@ function storageFilePathGet( o )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
-  o = _.routineOptions( storageFilePathGet, o );
+  o = _.routineOptions( storagePathGet, o );
 
   /* */
 
@@ -396,7 +396,7 @@ function storageFilePathGet( o )
   return o;
 }
 
-storageFilePathGet.defaults =
+storagePathGet.defaults =
 {
   storageDirPath : null,
   storageFilePath : null,
@@ -412,7 +412,7 @@ function storageFilePathToLoadGet( o )
   let result;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  o = self.storageFilePathGet( o );
+  o = self.storagePathGet( o );
 
   [ o.storageFilePath, o.storageDirPath ] = _.multipleAll([ o.storageFilePath, o.storageDirPath ]);
 
@@ -499,7 +499,7 @@ function storageFilePathToSaveGet( o )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  o = self.storageFilePathGet( o );
+  o = self.storagePathGet( o );
 
   let good = _.all( o.storageFilePath, ( storageFilePath ) =>
   {
@@ -538,12 +538,13 @@ function storageDefaultGet()
   let self = this;
   _.assert( arguments.length === 0 );
   let op = Object.create( null );
+  op.storageFilePath = self.storagePathGet().storageFilePath;
   op.storage = self.storageToSave( op );
 
   let defaults = self.Self.fieldsOfRelationsGroups;
   for( let s in op.storage )
   {
-    _.assert( defaults[ s ] !== undefined, 'Not clear what is default value for field', s );
+    _.sureBriefly( defaults[ s ] !== undefined, 'Not clear what is default value for field', s );
     op.storage[ s ] = defaults[ s ];
   }
 
@@ -598,6 +599,7 @@ let Forbids =
   _storageFileLoad : '_storageFileLoad',
   _storageFileSaveAct : '_storageFileSaveAct',
   _storageFilePathGet : '_storageFilePathGet',
+  storageFilePathGet : 'storageFilePathGet',
 }
 
 let Accessors =
@@ -629,7 +631,7 @@ let Supplement =
 
   storageFilePathApply : storageFilePathApply,
   storageFileFromDirPath : storageFileFromDirPath,
-  storageFilePathGet : storageFilePathGet,
+  storagePathGet : storagePathGet,
   storageFilePathToLoadGet : storageFilePathToLoadGet,
   storageFilePathToSaveGet : storageFilePathToSaveGet,
 
