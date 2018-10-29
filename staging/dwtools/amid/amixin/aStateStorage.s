@@ -64,7 +64,7 @@ function _storageFileWrite( o )
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-o.storage-}' );
   _.assert( arguments.length === 1 );
   _.assert( path.isAbsolute( o.storageFilePath ) );
-  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( _.routineIs( self.storageToSave ) );
 
   if( logger.verbosity >= 3 )
@@ -108,7 +108,7 @@ function _storageFilesWrite( o )
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
 
-  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.routineOptions( _storageFilesWrite, o );
 
@@ -187,7 +187,7 @@ function _storageFileRead( o )
 
   _.routineOptions( _storageFileRead, o );
   _.assert( path.isAbsolute( o.storageFilePath ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !fileProvider.fileStat( o.storageFilePath ) )
   return false;
@@ -229,10 +229,10 @@ function _storageFilesRead( o )
   o.storageFilePath = o.storageFilePath || self.storageFileName;
   o.storageFilePath = path.s.join( o.storageDirPath, o.storageFilePath );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !!o.storageFilePath );
-  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
-  _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'expects absolute paths {-o.storageFilePath-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
+  _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'Expects absolute paths {-o.storageFilePath-}' );
   _.routineOptions( _storageFilesRead, o );
 
   let result = Object.create( null );
@@ -361,7 +361,7 @@ function storageFileFromDirPath( storageDirPath )
   let storageFilePath = null;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
 
   // storageDirPath = path.s.resolve( storageDirPath );
   storageFilePath = path.s.join( storageDirPath , self.storageFileName );
@@ -378,7 +378,7 @@ function storagePathGet( o )
   let path = fileProvider.path;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.strDefined( self.storageFileName ), 'expects string field {-storageFileName-}' );
+  _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   o = _.routineOptions( storagePathGet, o );
 
   /* */
