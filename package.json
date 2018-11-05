@@ -7,7 +7,7 @@
   "main": "proto/dwtools/amid/amixin/aStateStorage.s",
   "files": [
     "proto/dwtools/amid/amixin",
-    "production"
+    "proto/dwtools/Tools.s", "production"
   ],
   "scripts": {
     "test": "wtest staging",
