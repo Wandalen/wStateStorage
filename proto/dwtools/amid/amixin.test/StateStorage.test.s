@@ -42,7 +42,7 @@ function sampleClassMake( o )
 
   if( !o.fileProvider )
   {
-    let filesTree = { dir1 : { dir2 : { '.storage' : '{ random : 0.6397020320139724 }', dir3 : {} } } }
+    let filesTree = { dir1 : { dir2 : { 'storage' : '{ random : 0.6397020320139724 }', dir3 : {} } } }
     o.fileProvider = new _.FileProvider.Extract({ filesTree : filesTree });
   }
 
@@ -133,12 +133,12 @@ function withStorageFilePath( test )
 
   let fieldsMap =
   {
-    storageFilePath :  '/dir1/dir2/.storage',
+    storageFilePath :  '/dir1/dir2/storage',
   }
 
   var SampleClass = context.sampleClassMake
   ({
-    storageFileName : '.storage',
+    storageFileName : 'storage',
     storageToSave : storageToSave,
     storageLoaded : storageLoaded,
     fieldsMap : fieldsMap,
@@ -155,11 +155,11 @@ function withStorageFilePath( test )
   test.case = 'defined storageFilePath cd:/';
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/storage' );
 
   test.description = 'storageLoad';
   sample.storageLoad();
@@ -168,13 +168,13 @@ function withStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/storage' );
 
   test.description = 'storageSave';
   sample.random = Math.random();
@@ -184,13 +184,13 @@ function withStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/storage' );
 
   /* */
 
@@ -203,7 +203,7 @@ function withStorageFilePath( test )
   test.identical( sample.storageFilePathToLoadGet(), null );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/storage' );
 
   test.description = 'storageFilePath';
   test.identical( sample.storageFilePath, null );
@@ -215,7 +215,7 @@ function withStorageFilePath( test )
   test.identical( sample.storageFilePathToLoadGet(), null );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/storage' );
 
   test.description = 'storageFilePath';
   test.identical( sample.storageFilePath, null );
@@ -228,13 +228,13 @@ function withStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/.storage' );
+  test.identical( sample.storageFilePath, '/storage' );
 
   /* */
 
@@ -245,10 +245,10 @@ function withStorageFilePath( test )
   sample.fileProvider.path.current( '/dir1/dir2/dir3' );
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePath';
   test.identical( sample.storageFilePath, null );
@@ -260,13 +260,13 @@ function withStorageFilePath( test )
   test.identical( got, expected );
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/storage' );
 
   test.description = 'storageSave';
   sample.random = Math.random();
@@ -276,13 +276,13 @@ function withStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/storage' );
 
   test.description = 'storageSave';
   sample.storageFilePath = null;
@@ -293,13 +293,13 @@ function withStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePath';
-  test.identical( sample.storageFilePath, '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePath, '/dir1/dir2/dir3/storage' );
 
 }
 
@@ -335,7 +335,7 @@ function withoutStorageFilePath( test )
 
   var SampleClass = context.sampleClassMake
   ({
-    storageFileName : '.storage',
+    storageFileName : 'storage',
     storageToSave : storageToSave,
     storageLoaded : storageLoaded,
     storeMap : storeMap,
@@ -349,10 +349,10 @@ function withoutStorageFilePath( test )
   test.identical( sample.random, null );
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePath';
   test.identical( sample.storageFilePath, undefined );
@@ -370,10 +370,10 @@ function withoutStorageFilePath( test )
   test.identical( got, expected )
 
   test.description = 'storageFilePathToLoadGet';
-  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToLoadGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePathToSaveGet';
-  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/.storage' );
+  test.identical( sample.storageFilePathToSaveGet(), '/dir1/dir2/dir3/storage' );
 
   test.description = 'storageFilePath';
   test.identical( sample.storageFilePath, undefined );
@@ -414,7 +414,7 @@ function storageSave( test )
 
   var sampleClass = self.sampleClassMake
   ({
-    storageFileName : '.storage',
+    storageFileName : 'storage',
     storageToSave : storageToSave,
     storageLoaded : storageLoaded,
     fileProvider : new _.FileProvider.Extract(),
@@ -432,7 +432,7 @@ function storageSave( test )
   test.case = 'storageFilePath is a root directory'
   var classInstance = new sampleClass( fields );
   classInstance.storageSave();
-  test.identical( classInstance.storageFilePath, '/.storage' )
+  test.identical( classInstance.storageFilePath, '/storage' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, fields );
 
@@ -470,7 +470,7 @@ function storageSave( test )
   classInstance.fileProvider.filesDelete( classInstance.storageDirPath );
   classInstance.fileProvider.directoryMake( classInstance.storageDirPath );
   classInstance.storageSave();
-  test.identical( classInstance.storageFilePath, '/storageFilePath/.storage' )
+  test.identical( classInstance.storageFilePath, '/storageFilePath/storage' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, fields );
 
@@ -486,12 +486,12 @@ function storageSave( test )
   test.identical( classInstance.storageDirPath, [ '/', '/some/dir' ] );
   test.identical( classInstance.storageFilePath, null );
   test.identical( classInstance.storageFilePathToLoadGet(), null );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage', '/some/dir/.storage' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage', '/some/dir/storage' ] );
   classInstance.storageSave();
   test.identical( classInstance.storageDirPath, [ '/', '/some/dir' ] );
-  test.identical( classInstance.storageFilePath, [ '/.storage', '/some/dir/.storage' ] );
-  test.identical( classInstance.storageFilePathToLoadGet(), [ '/.storage', '/some/dir/.storage' ] );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage', '/some/dir/.storage' ] );
+  test.identical( classInstance.storageFilePath, [ '/storage', '/some/dir/storage' ] );
+  test.identical( classInstance.storageFilePathToLoadGet(), [ '/storage', '/some/dir/storage' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage', '/some/dir/storage' ] );
   var storages = classInstance.storageFilePath.map( ( p ) => classInstance.fileProvider.fileReadJs( p ) );
   test.identical( storages, [ fields, fields ] );
 
@@ -501,41 +501,41 @@ function storageSave( test )
   var o2 =
   {
     storageDirPath : [ '/x', '/y' ],
-    storageFilePath : [ '/.storage2', '/some/dir/.storage2' ],
+    storageFilePath : [ '/storage2', '/some/dir/storage2' ],
     fileProvider : new _.FileProvider.Extract()
   }
   var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
   test.identical( classInstance.storageDirPath, [ '/x', '/y' ] );
-  test.identical( classInstance.storageFilePath, [ '/.storage2', '/some/dir/.storage2' ] );
+  test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
   test.identical( classInstance.storageFilePathToLoadGet(), null );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage2', '/some/dir/.storage2' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage2', '/some/dir/storage2' ] );
   classInstance.storageSave();
   test.identical( classInstance.storageDirPath, [ '/', '/some/dir' ] );
-  test.identical( classInstance.storageFilePath, [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToLoadGet(), [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage2', '/some/dir/.storage2' ] );
+  test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToLoadGet(), [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage2', '/some/dir/storage2' ] );
   var storages = classInstance.storageFilePath.map( ( p ) => classInstance.fileProvider.fileReadJs( p ) );
   test.identical( storages, [ fields, fields ] );
 
   var o3 =
   {
     storageDirPath : [ '/x', '/y' ],
-    storageFilePath : [ '/.storage2', '/some/dir/.storage2' ],
+    storageFilePath : [ '/storage2', '/some/dir/storage2' ],
     fileProvider : o2.fileProvider,
     ino : 13,
   }
 
   var classInstance = new sampleClass( _.mapExtend( null, fields, o3 ) );
   test.identical( classInstance.storageDirPath, [ '/x', '/y' ] );
-  test.identical( classInstance.storageFilePath, [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToLoadGet(), [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage2', '/some/dir/.storage2' ] );
+  test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToLoadGet(), [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage2', '/some/dir/storage2' ] );
   test.identical( classInstance.storageToSave(), { ino : 13 } );
   classInstance.storageLoad();
   test.identical( classInstance.storageDirPath, [ '/', '/some/dir' ] );
-  test.identical( classInstance.storageFilePath, [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToLoadGet(), [ '/.storage2', '/some/dir/.storage2' ] );
-  test.identical( classInstance.storageFilePathToSaveGet(), [ '/.storage2', '/some/dir/.storage2' ] );
+  test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToLoadGet(), [ '/storage2', '/some/dir/storage2' ] );
+  test.identical( classInstance.storageFilePathToSaveGet(), [ '/storage2', '/some/dir/storage2' ] );
   test.identical( classInstance.storageToSave(), { ino : 3659174697525816 } );
   var storages = classInstance.storageFilePath.map( ( p ) => classInstance.fileProvider.fileReadJs( p ) );
   test.identical( storages, [ fields, fields ] );
@@ -552,15 +552,15 @@ function storageSave( test )
   test.identical( classInstance.storageDirPath, null );
   test.identical( classInstance.storageFilePath, null );
   test.identical( classInstance.storageFilePathToLoadGet(), null );
-  test.identical( classInstance.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( classInstance.storageFilePathToSaveGet(), '/storage' );
   test.identical( classInstance.storageToSave(), { ino : 3659174697525816 } );
 
   classInstance.storageSave();
 
   test.identical( classInstance.storageDirPath, '/' );
-  test.identical( classInstance.storageFilePath, '/.storage' );
-  test.identical( classInstance.storageFilePathToLoadGet(), '/.storage' );
-  test.identical( classInstance.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( classInstance.storageFilePath, '/storage' );
+  test.identical( classInstance.storageFilePathToLoadGet(), '/storage' );
+  test.identical( classInstance.storageFilePathToSaveGet(), '/storage' );
   test.identical( classInstance.storageToSave(), { ino : 3659174697525816 } );
 
   /* - */
@@ -637,7 +637,7 @@ function storageLoad( test )
 
   var sampleClass = self.sampleClassMake
   ({
-    storageFileName : '.storage',
+    storageFileName : 'storage',
     storageLoaded : storageLoaded,
     storageToSave : storageToSave,
     storageIs : storageIs,
@@ -652,16 +652,16 @@ function storageLoad( test )
 
   test.case = 'basic';
   var classInstance1 = new sampleClass( storeSaved );
-  classInstance1.storageFilePath = '/dir1/dir2/.storage';
+  classInstance1.storageFilePath = '/dir1/dir2/storage';
   var classInstance2 = new sampleClass({ fileProvider : classInstance1.fileProvider });
-  classInstance2.storageFilePath = '/dir1/dir2/.storage';
+  classInstance2.storageFilePath = '/dir1/dir2/storage';
 
   test.identical( classInstance1.storageFilePathToLoadGet(), null );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance1.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance1.storageFilePath, '/dir1/dir2/storage' );
   test.identical( classInstance2.storageFilePathToLoadGet(), null );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance2.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance2.storageFilePath, '/dir1/dir2/storage' );
 
   test.identical( classInstance1.storageToSave(), storeSaved );
   test.identical( classInstance2.storageToSave(), storeMap );
@@ -673,12 +673,12 @@ function storageLoad( test )
   test.identical( classInstance1.storageToSave(), storeSaved );
   test.identical( classInstance2.storageToSave(), storeSaved );
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance1.storageFilePath, '/dir1/dir2/.storage' );
-  test.identical( classInstance2.storageFilePathToLoadGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/.storage' );
-  test.identical( classInstance2.storageFilePath, '/dir1/dir2/.storage' );
+  test.identical( classInstance1.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance1.storageFilePath, '/dir1/dir2/storage' );
+  test.identical( classInstance2.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( classInstance2.storageFilePath, '/dir1/dir2/storage' );
 
   /* */
 
@@ -687,10 +687,10 @@ function storageLoad( test )
   var classInstance2 = new sampleClass({ fileProvider : classInstance1.fileProvider });
 
   test.identical( classInstance1.storageFilePathToLoadGet(), null );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( classInstance1.storageFilePathToSaveGet(), '/storage' );
   test.identical( classInstance1.storageFilePath, null );
   test.identical( classInstance2.storageFilePathToLoadGet(), null );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/.storage' );
+  test.identical( classInstance2.storageFilePathToSaveGet(), '/storage' );
   test.identical( classInstance2.storageFilePath, null );
 
   test.identical( classInstance1.storageToSave(), storeSaved );
@@ -703,19 +703,19 @@ function storageLoad( test )
   test.identical( classInstance1.storageToSave(), storeSaved );
   test.identical( classInstance2.storageToSave(), storeSaved );
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), '/.storage' );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/.storage' );
-  test.identical( classInstance1.storageFilePath, '/.storage' );
-  test.identical( classInstance2.storageFilePathToLoadGet(), '/.storage' );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/.storage' );
-  test.identical( classInstance2.storageFilePath, '/.storage' );
+  test.identical( classInstance1.storageFilePathToLoadGet(), '/storage' );
+  test.identical( classInstance1.storageFilePathToSaveGet(), '/storage' );
+  test.identical( classInstance1.storageFilePath, '/storage' );
+  test.identical( classInstance2.storageFilePathToLoadGet(), '/storage' );
+  test.identical( classInstance2.storageFilePathToSaveGet(), '/storage' );
+  test.identical( classInstance2.storageFilePath, '/storage' );
 
   /* */
 
   test.case = 'load using only storageFilePath, file is a directory'
   var o2 =
   {
-    storageFilePath : '/.storage'
+    storageFilePath : '/storage'
   }
   var classInstance = new sampleClass( o2 );
   classInstance.fileProvider.filesDelete( o2.storageFilePath );
@@ -727,7 +727,7 @@ function storageLoad( test )
   test.case = 'load using only storageFilePath, file is a regular file'
   var o2 =
   {
-    storageFilePath : '/.storage'
+    storageFilePath : '/storage'
   }
   var classInstance = new sampleClass( o2 );
   classInstance.fileProvider.filesDelete( o2.storageFilePath );
