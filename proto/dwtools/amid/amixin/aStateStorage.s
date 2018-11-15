@@ -189,7 +189,7 @@ function _storageFileRead( o )
   _.assert( path.isAbsolute( o.storageFilePath ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !fileProvider.fileStat( o.storageFilePath ) )
+  if( !fileProvider.statResolvedRead( o.storageFilePath ) )
   return false;
 
   /* */
@@ -455,7 +455,7 @@ function storageFilePathToLoadGet( o )
 
   _.sure
   (
-    result.storageFilePath === null || _.all( result.storageFilePath, ( storageFilePath ) => fileProvider.fileStat( storageFilePath ) ),
+    result.storageFilePath === null || _.all( result.storageFilePath, ( storageFilePath ) => fileProvider.statResolvedRead( storageFilePath ) ),
     () => 'Storage file does not exist ' + _.toStr( o )
   );
 
