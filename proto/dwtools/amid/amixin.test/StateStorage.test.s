@@ -460,7 +460,7 @@ function storageSave( test )
   test.case = 'storageFilePath is directory'
   var classInstance = new sampleClass( _.mapExtend( null, fields, { storageFilePath : '/storageFilePath' } ) );
   classInstance.fileProvider.filesDelete( classInstance.storageFilePath );
-  classInstance.fileProvider.directoryMake( classInstance.storageFilePath );
+  classInstance.fileProvider.dirMake( classInstance.storageFilePath );
   test.shouldThrowErrorSync( () => classInstance.storageSave() );
 
   /* */
@@ -468,7 +468,7 @@ function storageSave( test )
   test.case = 'storageFilePath is directory'
   var classInstance = new sampleClass( _.mapExtend( null, fields, { storageDirPath : '/storageFilePath' } ) );
   classInstance.fileProvider.filesDelete( classInstance.storageDirPath );
-  classInstance.fileProvider.directoryMake( classInstance.storageDirPath );
+  classInstance.fileProvider.dirMake( classInstance.storageDirPath );
   classInstance.storageSave();
   test.identical( classInstance.storageFilePath, '/storageFilePath/storage' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
@@ -719,7 +719,7 @@ function storageLoad( test )
   }
   var classInstance = new sampleClass( o2 );
   classInstance.fileProvider.filesDelete( o2.storageFilePath );
-  classInstance.fileProvider.directoryMake( o2.storageFilePath );
+  classInstance.fileProvider.dirMake( o2.storageFilePath );
   test.shouldThrowError( () => classInstance.storageLoad() );
 
   /* */

@@ -512,7 +512,7 @@ function storageFilePathToSaveGet( o )
   let good = _.all( o.storageFilePath, ( storageFilePath ) =>
   {
     let dir = path.dir( storageFilePath );
-    return !fileProvider.fileExists( dir ) || fileProvider.directoryIs( dir );
+    return !fileProvider.fileExists( dir ) || fileProvider.isDir( dir );
   })
 
   _.sure( good, () => 'Directory for storage file does not exist ' + _.strQuote( o.storageFilePath ) );
