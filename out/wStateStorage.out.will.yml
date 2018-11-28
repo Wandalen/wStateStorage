@@ -166,8 +166,8 @@ reflector:
       ./dwtools/amid/amixin/aStateStorage.s: true
       ./dwtools/amid/amixin.test/StateStorage.test.s: true
     srcFilter:
-      basePath: ./proto
-      prefixPath: .
+      basePath: .
+      prefixPath: proto
     dstFilter:
       basePath: .
       prefixPath: .
