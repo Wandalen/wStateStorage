@@ -616,44 +616,44 @@ let Supplement =
 
   // save
 
-  _storageFileWrite : _storageFileWrite,
-  _storageFilesWrite : _storageFilesWrite,
-  storageSave : storageSave,
-  storageToSave : storageToSave,
+  _storageFileWrite,
+  _storageFilesWrite,
+  storageSave,
+  storageToSave,
 
   // load
 
-  _storageFileRead : _storageFileRead,
-  _storageFilesRead : _storageFilesRead,
-  storageLoad : storageLoad,
-  storageLoaded : storageLoaded,
+  _storageFileRead,
+  _storageFilesRead,
+  storageLoad,
+  storageLoaded,
 
   // path
 
-  storageFilePathApply : storageFilePathApply,
-  storageFileFromDirPath : storageFileFromDirPath,
-  storagePathGet : storagePathGet,
-  storageFilePathToLoadGet : storageFilePathToLoadGet,
-  storageFilePathToSaveGet : storageFilePathToSaveGet,
+  storageFilePathApply,
+  storageFileFromDirPath,
+  storagePathGet,
+  storageFilePathToLoadGet,
+  storageFilePathToSaveGet,
 
   // etc
 
-  storageIs : storageIs,
-  storageCheck : storageCheck,
-  storageDefaultGet : storageDefaultGet,
+  storageIs,
+  storageCheck,
+  storageDefaultGet,
 
   //
 
-  MustHave : MustHave,
-  CouldHave : CouldHave,
+  MustHave,
+  CouldHave,
 
-  Composes : Composes,
-  Aggregates : Aggregates,
-  Associates : Associates,
-  Restricts : Restricts,
-  Statics : Statics,
-  Forbids : Forbids,
-  Accessors : Accessors,
+  Composes,
+  Aggregates,
+  Associates,
+  Restricts,
+  Statics,
+  Forbids,
+  Accessors,
 
 }
 
