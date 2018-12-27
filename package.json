@@ -27,8 +27,7 @@
     "wFiles": ""
   },
   "devDependencies": {
-    "wTesting": "",
-    "wstatestorage": "."
+    "wTesting": ""
   },
   "keywords": [
     "wTools"
