@@ -543,7 +543,7 @@ function storageDefaultGet()
   op.storageFilePath = self.storagePathGet().storageFilePath;
   op.storage = self.storageToSave( op );
 
-  let defaults = self.Self.fieldsOfRelationsGroups;
+  let defaults = self.Self.FieldsOfRelationsGroups;
   for( let s in op.storage )
   {
     _.sureBriefly( defaults[ s ] !== undefined, 'Not clear what is default value for field', s );
