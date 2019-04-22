@@ -8,14 +8,17 @@ about:
     to restore the state later ( for example on process start ). Use the module
     to be more cross-platform, don't repeat yourself and forget about details of
     implementation you don't worry.
-  version: 0.3.60
   enabled: 1
-  interpreters:
-    - nodejs >= 6.0.0
-    - chrome >= 60.0.0
-    - firefox >= 60.0.0
-  keywords:
-    - wTools
+  version: 0.3.60
+  values:
+    enabled: 1
+    name: wStateStorage
+    interpreters:
+      - nodejs >= 6.0.0
+      - chrome >= 60.0.0
+      - firefox >= 60.0.0
+    keywords:
+      - wTools
 execution:
   scripts:
     test: wtest proto
@@ -71,66 +74,37 @@ path:
       export: 1
       tar: 1
       public: 1
+  original.will.files:
+    path:
+      - .im.will.yml
+      - .ex.will.yml
 submodule: {}
 reflector:
   reflect.proto.:
     src:
       filePath:
-        .: .
-      prefixPath: proto
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
-    dst:
-      prefixPath: out/release
+        'path::proto': 'path::out.*=1'
     criterion:
       debug: 0
+    mandatory: 1
     inherit:
       - predefined.*
   reflect.proto.debug:
     src:
       filePath:
-        .: .
-      prefixPath: proto
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
-    dst:
-      prefixPath: out/debug
+        'path::proto': 'path::out.*=1'
     criterion:
       debug: 1
+    mandatory: 1
     inherit:
       - predefined.*
   reflect.submodules:
     src:
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+      filePath:
+        'submodule::*/exported::*=1/path::exportedDir*=1': 'path::out.*=1'
     criterion:
       debug: 1
+    mandatory: 1
     inherit:
       - predefined.*
   exported.proto.export:
@@ -146,22 +120,12 @@ reflector:
       export: 1
       tar: 1
       public: 1
+    mandatory: 1
   exportedFiles.proto.export:
-    recursive: 0
     src:
-      filePath:
-        .: null
-        dwtools: null
-        dwtools/Tools.s: null
-        dwtools/abase: null
-        dwtools/amid: null
-        dwtools/amid/amixin: null
-        dwtools/amid/amixin/aStateStorage.s: null
-        dwtools/amid/amixin.test: null
-        dwtools/amid/amixin.test/StateStorage.test.s: null
-        dwtools/atop: null
+      filePath: 'path::exportedFiles.proto.export'
       basePath: .
-      prefixPath: proto
+      prefixPath: 'path::exportedDir.proto.export'
     criterion:
       default: 1
       debug: 1
@@ -170,6 +134,8 @@ reflector:
       export: 1
       tar: 1
       public: 1
+    recursive: 0
+    mandatory: 1
 step:
   clean.out.:
     criterion:
@@ -231,6 +197,13 @@ step:
       raw: 1
     opts:
       reflector: 'reflector::reflect.submodules*=1'
+    inherit:
+      - predefined.reflect
+  reflect.submodules:
+    criterion:
+      debug: 1
+    opts:
+      reflector: 'reflector::reflect.submodules*'
     inherit:
       - predefined.reflect
   export.proto:
@@ -303,3 +276,4 @@ exported:
     exportedFilesReflector: 'reflector::exportedFiles.proto.export'
     exportedDirPath: 'path::exportedDir.proto.export'
     exportedFilesPath: 'path::exportedFiles.proto.export'
+    originalWillFilesPath: 'path::original.will.files'

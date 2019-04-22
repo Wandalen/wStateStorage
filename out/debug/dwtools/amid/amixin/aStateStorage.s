@@ -23,6 +23,12 @@ if( typeof module !== 'undefined' )
 
 //
 
+/**
+ * @summary Mixin to add persistent state storing functionality to a class.
+ * @class wStateStorage
+ * @memberof module:Tools/mid/StateStorage
+*/
+
 let _global = _global_;
 let _ = _global_.wTools;
 let Parent = null;
@@ -118,6 +124,12 @@ _storageFilesWrite.defaults =
 
 //
 
+/**
+ * @summary Saves storage to hard drive.
+ * @function storageSave
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
+
 function storageSave()
 {
   let self = this;
@@ -136,6 +148,12 @@ function storageSave()
 }
 
 //
+
+/**
+ * @summary Returns current storage.
+ * @function storageToSave
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
 
 function storageToSave( o )
 {
@@ -244,6 +262,14 @@ _storageFilesRead.defaults =
 should not throw error if cant load file, but return false
 */
 
+/**
+ * @summary Reads storage from a hard drive.
+ * @description Path to storage is obtained from {@link module:Tools/mid/StateStorage.wStateStorage#storageFilePathToLoadGet wStateStorage.storageFilePathToLoadGet}.
+ * @function storageLoad
+ * @returns {Boolean} Returns true if storage is succesfully loaded, otherwise returns false.
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
+
 function storageLoad()
 {
   let self = this;
@@ -276,6 +302,15 @@ function storageLoad()
 }
 
 //
+
+/**
+ * @summary Loads provided storage. Extends current storage with properties of loaded storage.
+ * @param {Object} o Options map.
+ * @param {Object} o.storage Source storage.
+ * @param {String} o.storageFilePath Path to storage.
+ * @function storageLoaded
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
 
 function storageLoaded( o )
 {
@@ -396,6 +431,15 @@ storagePathGet.defaults =
 
 //
 
+/**
+ * @summary Returns path on hard drive where current storage is located.
+ * @param {Object} o Options map.
+ * @param {String} o.storageDirPath Source storage.
+ * @param {String} o.storageFilePath Path to storage.
+ * @function storageFilePathToLoadGet
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
+
 function storageFilePathToLoadGet( o )
 {
   let self = this;
@@ -483,6 +527,15 @@ storageFilePathToLoadGet.defaults =
 
 //
 
+/**
+ * @summary Returns path on hard drive where current storage can be saved.
+ * @param {Object} o Options map.
+ * @param {String} o.storageDirPath Source storage.
+ * @param {String} o.storageFilePath Path to storage.
+ * @function storageFilePathToSaveGet
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
+
 function storageFilePathToSaveGet( o )
 {
   let self = this;
@@ -514,6 +567,13 @@ storageFilePathToSaveGet.defaults =
 // etc
 // --
 
+/**
+ * @summary Returns true if provided entity `src` is a storage.
+ * @param {Object} storage Source storage.
+ * @function storageIs
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
+
 function storageIs( storage )
 {
   let self = this;
@@ -524,6 +584,13 @@ function storageIs( storage )
 }
 
 //
+
+/**
+ * @summary Checks if provided entity `src` is a storage. Throws an Error if not.
+ * @param {Object} storage Source storage.
+ * @function storageCheck
+ * @memberof module:Tools/mid/StateStorage.wStateStorage#
+*/
 
 function storageCheck( storage )
 {
