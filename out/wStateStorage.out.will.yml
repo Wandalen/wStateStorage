@@ -31,6 +31,10 @@ path:
     path: out
     criterion:
       predefined: 1
+  module.common:
+    path: out/wStateStorage.out
+    criterion:
+      predefined: 1
   local:
     criterion:
       predefined: 1
