@@ -636,6 +636,7 @@ let CouldHave =
   storageDirPath : null,
   storage : null,
   storagesLoaded : null,
+  storageSavingAsJs : 1,
 }
 
 let Composes =
