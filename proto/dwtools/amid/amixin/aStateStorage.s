@@ -504,14 +504,12 @@ function storageFilePathToLoadGet( o )
       break;
       o.storageDirPath = path.dir( o.storageDirPath );
     }
-    while( o.storageDirPath !== '/..' );
+    // while( o.storageDirPath !== '/..' );
+    while( o.storageDirPath !== '/..' && o.storageDirPath !== '/../' );
 
-    if( o.storageDirPath === '/..' )
+    if( o.storageDirPath === '/..' || o.storageDirPath === '/../' )
     {
       return null;
-      // o.storageDirPath = null;
-      // o.storageFilePath = null;
-      // return o;
     }
 
     return o;
