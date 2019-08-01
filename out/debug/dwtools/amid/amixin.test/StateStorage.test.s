@@ -32,12 +32,12 @@ function sampleClassMake( o )
 
   function SampleClass( o )
   {
-    return _.instanceConstructor( SampleClass, this, arguments );
+    return _.workpiece.construct( SampleClass, this, arguments );
   }
 
   function init( o )
   {
-    _.instanceInit( this );
+    _.workpiece.initFields( this );
     Object.preventExtensions( this );
     if( o )
     _.mapExtend( this, o );

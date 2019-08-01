@@ -34,7 +34,7 @@ let _ = _global_.wTools;
 let Parent = null;
 let Self = function wStateStorage( o )
 {
-  return _.instanceConstructor( Self, this, arguments );
+  return _.workpiece.construct( Self, this, arguments );
 }
 
 Self.shortName = 'StateStorage';
