@@ -23,13 +23,16 @@ about :
 path :
 
   repository : git+https:///github.com/Wandalen/wStateStorage.git
+  remotes :
+   - git+https:///github.com/Wandalen/wStateStorage.git
+   - npm:///wstatestorage
   bugtracker : https:///github.com/Wandalen/wStateStorage/issues
 
 step :
 
   proto.export :
     inherit : module.export
-    export : path::proto
+    export : path::export
     tar : 0
     criterion :
       content : 'proto'
