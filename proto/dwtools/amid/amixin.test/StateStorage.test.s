@@ -554,7 +554,7 @@ function storageSave( test )
 
   test.case = 'storageSave does not accept any arguments'
   var classInstance = new sampleClass( _.mapExtend( null, fields ) );
-  test.shouldThrowError( () => classInstance.storageSave( { storageFilePath : '/__storage' } ) )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave( { storageFilePath : '/__storage' } ) )
 
   test.case = 'set paths to null'
   var o2 =
@@ -563,7 +563,7 @@ function storageSave( test )
     storageFileName : null,
   }
   var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
-  test.shouldThrowError( () => classInstance.storageSave() )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave() )
 
   test.case = 'set storageFileName to null'
   var o2 =
@@ -571,7 +571,7 @@ function storageSave( test )
     storageFileName : null
   }
   var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
-  test.shouldThrowError( () => classInstance.storageSave() )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave() )
 
 
 }
@@ -704,7 +704,7 @@ function storageLoad( test )
   var classInstance = new sampleClass( o2 );
   classInstance.fileProvider.filesDelete( o2.storageFilePath );
   classInstance.fileProvider.dirMake( o2.storageFilePath );
-  test.shouldThrowError( () => classInstance.storageLoad() );
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() );
 
   /* */
 
@@ -716,7 +716,7 @@ function storageLoad( test )
   var classInstance = new sampleClass( o2 );
   classInstance.fileProvider.filesDelete( o2.storageFilePath );
   classInstance.fileProvider.fileWrite( o2.storageFilePath, o2.storageFilePath );
-  test.shouldThrowError( () => classInstance.storageLoad() );
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() );
 
   test.close( 'load storage from existing file' );
 
@@ -734,7 +734,7 @@ function storageLoad( test )
     storageFileName : null,
   }
   var classInstance = new sampleClass(  o2 );
-  test.shouldThrowError( () => classInstance.storageLoad() )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() )
 
   test.case = 'try to leave storageFilePath defined'
   var o2 =
@@ -742,7 +742,7 @@ function storageLoad( test )
     storageFileName : null
   }
   var classInstance = new sampleClass( o2 );
-  test.shouldThrowError( () => classInstance.storageLoad() )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() )
 
   test.close( 'try load not existing storage' );
 
@@ -751,7 +751,7 @@ function storageLoad( test )
 
   test.case = 'storageSave does not accept any arguments'
   var classInstance = new sampleClass();
-  test.shouldThrowError( () => classInstance.storageLoad( { storageFilePath : '/__storage' } ) )
+  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad( { storageFilePath : '/__storage' } ) )
 
 }
 
@@ -760,7 +760,7 @@ function storageLoad( test )
 var Self =
 {
 
-  name : 'Tools/mid/StateStorage',
+  name : 'Tools.mid.StateStorage',
   silencing : 1,
 
   context :
