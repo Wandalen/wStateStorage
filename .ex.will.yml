@@ -23,7 +23,7 @@ about :
 path :
 
   repository : git+https:///github.com/Wandalen/wStateStorage.git
-  remotes :
+  origins :
    - git+https:///github.com/Wandalen/wStateStorage.git
    - npm:///wstatestorage
   bugtracker : https:///github.com/Wandalen/wStateStorage/issues
