@@ -6,12 +6,13 @@ consistency:
     hash: 492da12159871d6d5ce5799cf6032ee4
     size: 2087
   ../.im.will.yml: &ref_1
-    hash: 59f5a49503979a8a6927fc7f1dee10ba
-    size: 5010
+    hash: 5f74357ddfc6a3f73868bffca01bcd2b
+    size: 5084
 module:
   wStateStorage.out:
     about:
       name: wStateStorage
+      org: noorg
       description: >-
         Mixin to add persistent state storing functionality to a class.
         StateStorage solves the common problem to persistently store the state
@@ -63,9 +64,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wStateStorage.git'
       origins:
@@ -75,15 +73,15 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wStateStorage/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: .
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - ../package-lock.json
+          - ../package.json
+          - ../node_modules
       proto:
         path: ../proto
       export:
@@ -148,11 +146,13 @@ module:
         path: '{path::out.*=}/source/Index.s'
       exported.dir.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path: ../proto
       exported.files.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path:
@@ -339,6 +339,7 @@ module:
           prefixPath: ../proto
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
       exported.files.proto.export:
@@ -351,6 +352,7 @@ module:
         recursive: 0
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
     step:
@@ -797,6 +799,7 @@ module:
   ../:
     about:
       name: wStateStorage
+      org: noorg
       description: >-
         Mixin to add persistent state storing functionality to a class.
         StateStorage solves the common problem to persistently store the state
@@ -841,9 +844,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wStateStorage.git'
       origins:
@@ -853,21 +853,21 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wStateStorage/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: out
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - package-lock.json
+          - package.json
+          - node_modules
       proto:
-        path: ./proto
+        path: proto
       export:
         path: '{path::proto}/**'
       doc:
-        path: ./doc
+        path: doc
       out.raw.debug:
         criterion:
           debug: debug
@@ -1493,5 +1493,5 @@ module:
         hash: 492da12159871d6d5ce5799cf6032ee4
         size: 2087
       ../.im.will.yml:
-        hash: 59f5a49503979a8a6927fc7f1dee10ba
-        size: 5010
+        hash: 5f74357ddfc6a3f73868bffca01bcd2b
+        size: 5084
