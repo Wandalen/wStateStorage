@@ -16,7 +16,7 @@
   {
     "url" : "https://github.com/Wandalen/wStateStorage/issues"
   }, 
-  "dependencies" : { "wTools" : "", "wProto" : "", "wFiles" : "" }, 
-  "devDependencies" : { "wTesting" : "" }, 
+  "dependencies" : { "wTools" : "alpha", "wProto" : "alpha", "wFiles" : "alpha" }, 
+  "devDependencies" : { "wTesting" : "alpha" }, 
   "keywords" : [ "wTools" ]
 }
