@@ -137,7 +137,7 @@ function storageSave()
   let fileProvider = self.fileProvider;
   let path = fileProvider.path;
 
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
 
   let result = self._storageFilesWrite({ storageFilePath : storageFilePath });
@@ -275,7 +275,7 @@ function storageLoad()
   let self = this;
   let storageFilePath = self.storageFilePathToLoadGet();
 
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   // _.sure( !!storageFilePath, 'Cant load storage : not found' );
 
   if( !storageFilePath )
@@ -604,7 +604,7 @@ function storageCheck( storage )
 function storageDefaultGet()
 {
   let self = this;
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   let op = Object.create( null );
   op.storageFilePath = self.storagePathGet().storageFilePath;
   op.storage = self.storageToSave( op );
