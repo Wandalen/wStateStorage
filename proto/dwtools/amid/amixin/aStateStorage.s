@@ -26,7 +26,7 @@ if( typeof module !== 'undefined' )
 /**
  * @summary Mixin to add persistent state storing functionality to a class.
  * @class wStateStorage
- * @memberof module:Tools/mid/StateStorage
+ * @module Tools/mid/StateStorage
 */
 
 let _global = _global_;
@@ -127,7 +127,9 @@ _storageFilesWrite.defaults =
 /**
  * @summary Saves storage to hard drive.
  * @function storageSave
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageSave()
@@ -152,7 +154,9 @@ function storageSave()
 /**
  * @summary Returns current storage.
  * @function storageToSave
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageToSave( o )
@@ -267,7 +271,9 @@ should not throw error if cant load file, but return false
  * @description Path to storage is obtained from {@link module:Tools/mid/StateStorage.wStateStorage#storageFilePathToLoadGet wStateStorage.storageFilePathToLoadGet}.
  * @function storageLoad
  * @returns {Boolean} Returns true if storage is succesfully loaded, otherwise returns false.
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageLoad()
@@ -309,7 +315,9 @@ function storageLoad()
  * @param {Object} o.storage Source storage.
  * @param {String} o.storageFilePath Path to storage.
  * @function storageLoaded
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageLoaded( o )
@@ -437,7 +445,9 @@ storagePathGet.defaults =
  * @param {String} o.storageDirPath Source storage.
  * @param {String} o.storageFilePath Path to storage.
  * @function storageFilePathToLoadGet
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageFilePathToLoadGet( o )
@@ -532,7 +542,9 @@ storageFilePathToLoadGet.defaults =
  * @param {String} o.storageDirPath Source storage.
  * @param {String} o.storageFilePath Path to storage.
  * @function storageFilePathToSaveGet
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageFilePathToSaveGet( o )
@@ -570,7 +582,9 @@ storageFilePathToSaveGet.defaults =
  * @summary Returns true if provided entity `src` is a storage.
  * @param {Object} storage Source storage.
  * @function storageIs
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageIs( storage )
@@ -588,7 +602,9 @@ function storageIs( storage )
  * @summary Checks if provided entity `src` is a storage. Throws an Error if not.
  * @param {Object} storage Source storage.
  * @function storageCheck
- * @memberof module:Tools/mid/StateStorage.wStateStorage#
+ * @class wStateStorage
+ * @namespace wTools
+ * @module Tools/mid/StateStorage
 */
 
 function storageCheck( storage )
