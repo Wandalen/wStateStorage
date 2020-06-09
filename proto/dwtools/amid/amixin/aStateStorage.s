@@ -32,7 +32,8 @@ if( typeof module !== 'undefined' )
 let _global = _global_;
 let _ = _global_.wTools;
 let Parent = null;
-let Self = function wStateStorage( o )
+let Self = wStateStorage;
+function wStateStorage( o )
 {
   return _.workpiece.construct( Self, this, arguments );
 }
