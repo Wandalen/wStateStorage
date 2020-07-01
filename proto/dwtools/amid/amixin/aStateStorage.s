@@ -74,7 +74,6 @@ function _storageFileWrite( o )
 
   /* xxx : replace by write encoders */
 
-  debugger;
   if( self.storageSavingAsJs )
   fileProvider.fileWriteJs( o2 );
   else
