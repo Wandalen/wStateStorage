@@ -1508,6 +1508,4 @@ module:
       ../.im.will.yml:
         hash: a155fe57393aa1cd2a761c58168fcfe8
         size: 5081
-      wStateStorage.out.will.yml:
-        hash: c676f3f8dcc8d8f97f2bfcac86d20317
-        size: 39049
+      wStateStorage.out.will.yml: *ref_0
