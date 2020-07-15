@@ -15,7 +15,7 @@ let Self = function wSample( o )
 function init( o )
 {
   let sample = this;
-  _.instanceInit( sample );
+  _.workpiece.initFields( sample );
 }
 
 //
