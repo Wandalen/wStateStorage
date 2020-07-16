@@ -13,7 +13,7 @@ if( typeof module !== 'undefined' )
 
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
 
 // --
 // context
@@ -757,7 +757,7 @@ function storageLoad( test )
 
 //
 
-var Self =
+let Self =
 {
 
   name : 'Tools.mid.StateStorage',
