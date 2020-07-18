@@ -51,7 +51,7 @@ function sampleClassMake( o )
     fileProvider :  _.define.own( o.fileProvider ),
   }
 
-  let Extend =
+  let Extension =
   {
     init : init,
     Composes : _.mapExtend( null, o.fieldsMap || {}, o.storeMap || {} ),
@@ -59,16 +59,16 @@ function sampleClassMake( o )
   }
 
   if( o.storageIs )
-  Extend.storageIs = o.storageIs;
+  Extension.storageIs = o.storageIs;
   if( o.storageLoaded )
-  Extend.storageLoaded = o.storageLoaded;
+  Extension.storageLoaded = o.storageLoaded;
   if( o.storageToSave )
-  Extend.storageToSave = o.storageToSave;
+  Extension.storageToSave = o.storageToSave;
 
   _.classDeclare
   ({
     cls : SampleClass,
-    extend : Extend,
+    extend : Extension,
   });
 
   _.StateStorage.mixin( SampleClass );
