@@ -8,8 +8,7 @@
 */
 
 /**
- * @file files/StateStorage.s.
- */
+ *  */
 
 if( typeof module !== 'undefined' )
 {
@@ -759,9 +758,7 @@ _.classDeclare
 
 _global_[ Self.name ] = _[ Self.shortName ] = Self;
 
-if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+
 
 if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
