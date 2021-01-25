@@ -45,7 +45,7 @@ function storageToSave( op )
 
 let Associates =
 {
-  storageFileName : '.sample.config.json',
+  storageFileName : _.path.join( __dirname, '.sample.config.json' ), // strange
   fileProvider : _.define.common( _.fileProvider ),
 }
 
@@ -75,8 +75,11 @@ _.StateStorage.mixin( Self );
 //
 
 let sample = new Self();
+debugger;
 sample.storageLoad();
 if( !sample.random )
 sample.random = Math.random();
 sample.storageSave();
 console.log( 'sample.random', sample.storageFilePathToLoadGet(), sample.random );
+
+_.fileProvider.filesDelete( _.path.join( __dirname, '.sample.config.json' ) );
