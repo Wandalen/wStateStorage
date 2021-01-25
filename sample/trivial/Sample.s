@@ -5,10 +5,11 @@ require( 'wstatestorage' );
 
 //
 
-let Self = function wSample( o )
+function wSample( o )
 {
   return _.workpiece.construct( Self, this, arguments );
 }
+let Self = wSample;
 
 //
 
@@ -54,11 +55,11 @@ let Associates =
 let Extend =
 {
 
-  init : init,
-  storageLoaded : storageLoaded,
-  storageToSave : storageToSave,
+  init,
+  storageLoaded,
+  storageToSave,
 
-  Associates : Associates,
+  Associates,
 
 }
 

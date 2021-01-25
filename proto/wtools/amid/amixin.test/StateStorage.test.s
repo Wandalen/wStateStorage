@@ -1,4 +1,5 @@
-( function _StateStorage_test_s_( ) {
+( function _StateStorage_test_s_()
+{
 
 'use strict';
 
@@ -26,8 +27,8 @@ function sampleClassMake( o )
 
   if( !o.fileProvider )
   {
-    let filesTree = { dir1 : { dir2 : { 'storage' : '{ random : 0.6397020320139724 }', dir3 : {} } } }
-    o.fileProvider = new _.FileProvider.Extract({ filesTree : filesTree });
+    let filesTree = { dir1 : { dir2 : { storage : '{ random : 0.6397020320139724 }', dir3 : {} } } }
+    o.fileProvider = new _.FileProvider.Extract({ filesTree });
   }
 
   function SampleClass( o )
@@ -53,9 +54,9 @@ function sampleClassMake( o )
 
   let Extension =
   {
-    init : init,
+    init,
     Composes : _.mapExtend( null, o.fieldsMap || {}, o.storeMap || {} ),
-    Associates : Associates,
+    Associates,
   }
 
   if( o.storageIs )
@@ -123,10 +124,10 @@ function withStorageFilePath( test )
   var SampleClass = context.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
-    fieldsMap : fieldsMap,
-    storeMap : storeMap,
+    storageToSave,
+    storageLoaded,
+    fieldsMap,
+    storeMap,
   });
 
   /* */
@@ -320,10 +321,10 @@ function withoutStorageFilePath( test )
   var SampleClass = context.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
-    storeMap : storeMap,
-    fieldsMap : fieldsMap,
+    storageToSave,
+    storageLoaded,
+    storeMap,
+    fieldsMap,
   });
 
   /* */
@@ -399,8 +400,8 @@ function storageSave( test )
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
+    storageToSave,
+    storageLoaded,
     fileProvider : new _.FileProvider.Extract(),
     fieldsMap : FieldsMap,
     storeMap : StoreMap
@@ -622,12 +623,12 @@ function storageLoad( test )
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageLoaded : storageLoaded,
-    storageToSave : storageToSave,
-    storageIs : storageIs,
+    storageLoaded,
+    storageToSave,
+    storageIs,
     fileProvider : new _.FileProvider.Extract(),
-    storeMap : storeMap,
-    fieldsMap : fieldsMap,
+    storeMap,
+    fieldsMap,
   });
 
   /* - */
@@ -635,64 +636,64 @@ function storageLoad( test )
   test.open( 'load storage from existing file' );
 
   test.case = 'basic';
-  var classInstance1 = new sampleClass( storeSaved );
-  classInstance1.storageFilePath = '/dir1/dir2/storage';
-  var classInstance2 = new sampleClass({ fileProvider : classInstance1.fileProvider });
-  classInstance2.storageFilePath = '/dir1/dir2/storage';
+  var instance1 = new sampleClass( storeSaved );
+  instance1.storageFilePath = '/dir1/dir2/storage';
+  var instance2 = new sampleClass({ fileProvider : instance1.fileProvider });
+  instance2.storageFilePath = '/dir1/dir2/storage';
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), null );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance1.storageFilePath, '/dir1/dir2/storage' );
-  test.identical( classInstance2.storageFilePathToLoadGet(), null );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance2.storageFilePath, '/dir1/dir2/storage' );
+  test.identical( instance1.storageFilePathToLoadGet(), null );
+  test.identical( instance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( instance1.storageFilePath, '/dir1/dir2/storage' );
+  test.identical( instance2.storageFilePathToLoadGet(), null );
+  test.identical( instance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( instance2.storageFilePath, '/dir1/dir2/storage' );
 
-  test.identical( classInstance1.storageToSave(), storeSaved );
-  test.identical( classInstance2.storageToSave(), storeMap );
-  var got = _.mapOnly( classInstance1, storeMap );
+  test.identical( instance1.storageToSave(), storeSaved );
+  test.identical( instance2.storageToSave(), storeMap );
+  var got = _.mapOnly( instance1, storeMap );
   test.identical( got, storeSaved );
-  classInstance1.storageSave();
-  test.identical( classInstance1.storageToSave(), classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() ) )
-  classInstance2.storageLoad();
-  test.identical( classInstance1.storageToSave(), storeSaved );
-  test.identical( classInstance2.storageToSave(), storeSaved );
+  instance1.storageSave();
+  test.identical( instance1.storageToSave(), instance1.fileProvider.fileReadJs( instance1.storageFilePathToLoadGet() ) )
+  instance2.storageLoad();
+  test.identical( instance1.storageToSave(), storeSaved );
+  test.identical( instance2.storageToSave(), storeSaved );
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance1.storageFilePath, '/dir1/dir2/storage' );
-  test.identical( classInstance2.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
-  test.identical( classInstance2.storageFilePath, '/dir1/dir2/storage' );
+  test.identical( instance1.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
+  test.identical( instance1.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( instance1.storageFilePath, '/dir1/dir2/storage' );
+  test.identical( instance2.storageFilePathToLoadGet(), '/dir1/dir2/storage' );
+  test.identical( instance2.storageFilePathToSaveGet(), '/dir1/dir2/storage' );
+  test.identical( instance2.storageFilePath, '/dir1/dir2/storage' );
 
   /* */
 
   test.case = 'storageFileName:null'
-  var classInstance1 = new sampleClass( storeSaved );
-  var classInstance2 = new sampleClass({ fileProvider : classInstance1.fileProvider });
+  var instance1 = new sampleClass( storeSaved );
+  var instance2 = new sampleClass({ fileProvider : instance1.fileProvider });
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), null );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/storage' );
-  test.identical( classInstance1.storageFilePath, null );
-  test.identical( classInstance2.storageFilePathToLoadGet(), null );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/storage' );
-  test.identical( classInstance2.storageFilePath, null );
+  test.identical( instance1.storageFilePathToLoadGet(), null );
+  test.identical( instance1.storageFilePathToSaveGet(), '/storage' );
+  test.identical( instance1.storageFilePath, null );
+  test.identical( instance2.storageFilePathToLoadGet(), null );
+  test.identical( instance2.storageFilePathToSaveGet(), '/storage' );
+  test.identical( instance2.storageFilePath, null );
 
-  test.identical( classInstance1.storageToSave(), storeSaved );
-  test.identical( classInstance2.storageToSave(), storeMap );
-  var got = _.mapOnly( classInstance1, storeMap );
+  test.identical( instance1.storageToSave(), storeSaved );
+  test.identical( instance2.storageToSave(), storeMap );
+  var got = _.mapOnly( instance1, storeMap );
   test.identical( got, storeSaved );
-  classInstance1.storageSave();
-  test.identical( classInstance1.storageToSave(), classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() ) )
-  classInstance2.storageLoad();
-  test.identical( classInstance1.storageToSave(), storeSaved );
-  test.identical( classInstance2.storageToSave(), storeSaved );
+  instance1.storageSave();
+  test.identical( instance1.storageToSave(), instance1.fileProvider.fileReadJs( instance1.storageFilePathToLoadGet() ) )
+  instance2.storageLoad();
+  test.identical( instance1.storageToSave(), storeSaved );
+  test.identical( instance2.storageToSave(), storeSaved );
 
-  test.identical( classInstance1.storageFilePathToLoadGet(), '/storage' );
-  test.identical( classInstance1.storageFilePathToSaveGet(), '/storage' );
-  test.identical( classInstance1.storageFilePath, '/storage' );
-  test.identical( classInstance2.storageFilePathToLoadGet(), '/storage' );
-  test.identical( classInstance2.storageFilePathToSaveGet(), '/storage' );
-  test.identical( classInstance2.storageFilePath, '/storage' );
+  test.identical( instance1.storageFilePathToLoadGet(), '/storage' );
+  test.identical( instance1.storageFilePathToSaveGet(), '/storage' );
+  test.identical( instance1.storageFilePath, '/storage' );
+  test.identical( instance2.storageFilePathToLoadGet(), '/storage' );
+  test.identical( instance2.storageFilePathToSaveGet(), '/storage' );
+  test.identical( instance2.storageFilePath, '/storage' );
 
   /* */
 
@@ -701,10 +702,10 @@ function storageLoad( test )
   {
     storageFilePath : '/storage'
   }
-  var classInstance = new sampleClass( o2 );
-  classInstance.fileProvider.filesDelete( o2.storageFilePath );
-  classInstance.fileProvider.dirMake( o2.storageFilePath );
-  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() );
+  var instance = new sampleClass( o2 );
+  instance.fileProvider.filesDelete( o2.storageFilePath );
+  instance.fileProvider.dirMake( o2.storageFilePath );
+  test.shouldThrowErrorOfAnyKind( () => instance.storageLoad() );
 
   /* */
 
@@ -713,10 +714,10 @@ function storageLoad( test )
   {
     storageFilePath : '/storage'
   }
-  var classInstance = new sampleClass( o2 );
-  classInstance.fileProvider.filesDelete( o2.storageFilePath );
-  classInstance.fileProvider.fileWrite( o2.storageFilePath, o2.storageFilePath );
-  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() );
+  var instance = new sampleClass( o2 );
+  instance.fileProvider.filesDelete( o2.storageFilePath );
+  instance.fileProvider.fileWrite( o2.storageFilePath, o2.storageFilePath );
+  test.shouldThrowErrorOfAnyKind( () => instance.storageLoad() );
 
   test.close( 'load storage from existing file' );
 
@@ -724,8 +725,8 @@ function storageLoad( test )
 
   test.open( 'try load not existing storage' );
 
-  var classInstance = new sampleClass( { storageFilePath : '/storageFilePath' } );
-  test.identical( classInstance.storageLoad(), false );
+  var instance = new sampleClass( { storageFilePath : '/storageFilePath' } );
+  test.identical( instance.storageLoad(), false );
 
   test.case = 'try to provide undefined paths'
   var o2 =
@@ -733,16 +734,16 @@ function storageLoad( test )
     storageFilePath : null,
     storageFileName : null,
   }
-  var classInstance = new sampleClass(  o2 );
-  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() )
+  var instance = new sampleClass(  o2 );
+  test.shouldThrowErrorOfAnyKind( () => instance.storageLoad() )
 
   test.case = 'try to leave storageFilePath defined'
   var o2 =
   {
     storageFileName : null
   }
-  var classInstance = new sampleClass( o2 );
-  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad() )
+  var instance = new sampleClass( o2 );
+  test.shouldThrowErrorOfAnyKind( () => instance.storageLoad() )
 
   test.close( 'try load not existing storage' );
 
@@ -750,8 +751,8 @@ function storageLoad( test )
   return;
 
   test.case = 'storageSave does not accept any arguments'
-  var classInstance = new sampleClass();
-  test.shouldThrowErrorOfAnyKind( () => classInstance.storageLoad( { storageFilePath : '/__storage' } ) )
+  var instance = new sampleClass();
+  test.shouldThrowErrorOfAnyKind( () => instance.storageLoad( { storageFilePath : '/__storage' } ) )
 
 }
 
@@ -765,17 +766,17 @@ let Self =
 
   context :
   {
-    sampleClassMake : sampleClassMake,
+    sampleClassMake,
   },
 
   tests :
   {
 
-    withStorageFilePath : withStorageFilePath,
-    withoutStorageFilePath : withoutStorageFilePath,
+    withStorageFilePath,
+    withoutStorageFilePath,
 
-    storageSave : storageSave,
-    storageLoad : storageLoad,
+    storageSave,
+    storageLoad,
 
   },
 
@@ -787,4 +788,4 @@ Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
-} )( );
+})();
