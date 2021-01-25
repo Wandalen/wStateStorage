@@ -8,7 +8,7 @@ Mixin to add persistent state storing functionality to a class. StateStorage sol
 git clone https://github.com/Wandalen/wStateStorage
 cd wStateStorage
 npm install
-node sample/Sample.s
+node sample/trivial/Sample.s
 ```
 
 ## To add to your project
