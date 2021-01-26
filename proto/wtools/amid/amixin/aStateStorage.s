@@ -1,4 +1,5 @@
-( function _StateStorage_s_() {
+( function _StateStorage_s_()
+{
 
 'use strict';
 
@@ -142,7 +143,7 @@ function storageSave()
   _.assert( arguments.length === 0, 'Expects no arguments' );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
 
-  let result = self._storageFilesWrite({ storageFilePath : storageFilePath });
+  let result = self._storageFilesWrite({ storageFilePath });
 
   self.storageFilePathApply( storageFilePath );
 
@@ -287,7 +288,7 @@ function storageLoad()
   if( !storageFilePath )
   return false;
 
-  let read = self._storageFilesRead({ storageFilePath : storageFilePath });
+  let read = self._storageFilesRead({ storageFilePath });
   let result = true;
   let storageFilePaths = [];
 
@@ -391,7 +392,7 @@ function storageFileFromDirPath( storageDirPath )
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
 
   // storageDirPath = path.s.resolve( storageDirPath );
-  storageFilePath = path.s.join( storageDirPath , self.storageFileName );
+  storageFilePath = path.s.join( storageDirPath, self.storageFileName );
 
   return storageFilePath;
 }
@@ -494,7 +495,8 @@ function storageFilePathToLoadGet( o )
   debugger;
   _.sure
   (
-    result.storageFilePath === null || !!_.all( result.storageFilePath, ( storageFilePath ) => fileProvider.statResolvedRead( storageFilePath ) ),
+    result.storageFilePath === null
+    || !!_.all( result.storageFilePath, ( storageFilePath ) => fileProvider.statResolvedRead( storageFilePath ) ),
     () => 'Storage file does not exist ' + _.toStr( o )
   );
 
@@ -757,8 +759,6 @@ _.classDeclare
 // --
 
 _global_[ Self.name ] = _[ Self.shortName ] = Self;
-
-
 
 if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
