@@ -1,4 +1,5 @@
-( function _StateStorage_test_s_( ) {
+( function _StateStorage_test_s_( )
+{
 
 'use strict';
 
@@ -26,8 +27,8 @@ function sampleClassMake( o )
 
   if( !o.fileProvider )
   {
-    let filesTree = { dir1 : { dir2 : { 'storage' : '{ random : 0.6397020320139724 }', dir3 : {} } } }
-    o.fileProvider = new _.FileProvider.Extract({ filesTree : filesTree });
+    let filesTree = { dir1 : { dir2 : { 'storage' : '{ random : 0.6397020320139724 }', 'dir3' : {} } } }
+    o.fileProvider = new _.FileProvider.Extract({ filesTree });
   }
 
   function SampleClass( o )
@@ -53,9 +54,9 @@ function sampleClassMake( o )
 
   let Extension =
   {
-    init : init,
+    init,
     Composes : _.mapExtend( null, o.fieldsMap || {}, o.storeMap || {} ),
-    Associates : Associates,
+    Associates,
   }
 
   if( o.storageIs )
@@ -123,10 +124,10 @@ function withStorageFilePath( test )
   var SampleClass = context.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
-    fieldsMap : fieldsMap,
-    storeMap : storeMap,
+    storageToSave,
+    storageLoaded,
+    fieldsMap,
+    storeMap,
   });
 
   /* */
@@ -320,10 +321,10 @@ function withoutStorageFilePath( test )
   var SampleClass = context.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
-    storeMap : storeMap,
-    fieldsMap : fieldsMap,
+    storageToSave,
+    storageLoaded,
+    storeMap,
+    fieldsMap,
   });
 
   /* */
@@ -399,8 +400,8 @@ function storageSave( test )
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageToSave : storageToSave,
-    storageLoaded : storageLoaded,
+    storageToSave,
+    storageLoaded,
     fileProvider : new _.FileProvider.Extract(),
     fieldsMap : FieldsMap,
     storeMap : StoreMap
@@ -415,7 +416,7 @@ function storageSave( test )
 
   test.case = 'storageFilePath is a root directory'
   var classInstance = new sampleClass( fields );
-  classInstance.storageSave();
+  classInstance.astorageSave();
   test.identical( classInstance.storageFilePath, '/storage' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, fields );
@@ -622,12 +623,12 @@ function storageLoad( test )
   var sampleClass = self.sampleClassMake
   ({
     storageFileName : 'storage',
-    storageLoaded : storageLoaded,
-    storageToSave : storageToSave,
-    storageIs : storageIs,
+    storageLoaded,
+    storageToSave,
+    storageIs,
     fileProvider : new _.FileProvider.Extract(),
-    storeMap : storeMap,
-    fieldsMap : fieldsMap,
+    storeMap,
+    fieldsMap,
   });
 
   /* - */
@@ -652,7 +653,11 @@ function storageLoad( test )
   var got = _.mapOnly( classInstance1, storeMap );
   test.identical( got, storeSaved );
   classInstance1.storageSave();
-  test.identical( classInstance1.storageToSave(), classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() ) )
+  test.identical
+  (
+    classInstance1.storageToSave(),
+    classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() )
+  )
   classInstance2.storageLoad();
   test.identical( classInstance1.storageToSave(), storeSaved );
   test.identical( classInstance2.storageToSave(), storeSaved );
@@ -682,7 +687,11 @@ function storageLoad( test )
   var got = _.mapOnly( classInstance1, storeMap );
   test.identical( got, storeSaved );
   classInstance1.storageSave();
-  test.identical( classInstance1.storageToSave(), classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() ) )
+  test.identical
+  (
+    classInstance1.storageToSave(),
+    classInstance1.fileProvider.fileReadJs( classInstance1.storageFilePathToLoadGet() )
+  )
   classInstance2.storageLoad();
   test.identical( classInstance1.storageToSave(), storeSaved );
   test.identical( classInstance2.storageToSave(), storeSaved );
@@ -765,17 +774,17 @@ let Self =
 
   context :
   {
-    sampleClassMake : sampleClassMake,
+    sampleClassMake,
   },
 
   tests :
   {
 
-    withStorageFilePath : withStorageFilePath,
-    withoutStorageFilePath : withoutStorageFilePath,
+    withStorageFilePath,
+    withoutStorageFilePath,
 
-    storageSave : storageSave,
-    storageLoad : storageLoad,
+    storageSave,
+    storageLoad,
 
   },
 
