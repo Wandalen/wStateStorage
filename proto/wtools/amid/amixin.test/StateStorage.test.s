@@ -734,7 +734,7 @@ function storageLoad( test )
     storageFilePath : null,
     storageFileName : null,
   }
-  var instance = new sampleClass(  o2 );
+  var instance = new sampleClass( o2 );
   test.shouldThrowErrorOfAnyKind( () => instance.storageLoad() )
 
   test.case = 'try to leave storageFilePath defined'
