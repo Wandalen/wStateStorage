@@ -5,10 +5,6 @@ require( 'wstatestorage' );
 
 //
 
-<<<<<<< HEAD
-let Self = wSample;
-=======
->>>>>>> 6cb4be08da564e24b53dddf292a660faaba5abdf
 function wSample( o )
 {
   return _.workpiece.construct( Self, this, arguments );
