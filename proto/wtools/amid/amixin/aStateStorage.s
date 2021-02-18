@@ -760,7 +760,10 @@ _.classDeclare
 
 _global_[ Self.name ] = _[ Self.shortName ] = Self;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6cb4be08da564e24b53dddf292a660faaba5abdf
 if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 

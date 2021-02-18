@@ -26,7 +26,7 @@ function onSuiteBegin( test )
   let context = this;
   context.provider = fileProvider;
   let path = context.provider.path;
-  context.suiteTempPath = context.provider.path.tempOpen( path.join( __dirname, '../..'  ), 'integration' );
+  context.suiteTempPath = context.provider.path.tempOpen( path.join( __dirname, '../..' ), 'integration' );
 }
 
 //
@@ -49,11 +49,22 @@ function production( test )
   let a = test.assetFor( 'production' );
   let runList = [];
 
-  if( process.env.GITHUB_EVENT_NAME === 'pull_request' )
+  let mdlPath = a.abs( __dirname, '../package.json' );
+  let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
+  let trigger = _.test.workflowTriggerGet( a.abs( __dirname, '..' ) );
+
+  if( mdl.private || trigger === 'pull_request' )
   {
     test.true( true );
     return;
   }
+
+  /* delay to let npm get updated */
+  if( trigger === 'publish' )
+  a.ready.delay( 60000 );
+
+  console.log( `Event : ${trigger}` );
+  console.log( `Env :\n${_.toStr( _.mapBut( process.env, { WTOOLS_BOT_TOKEN : null } ) )}` );
 
   /* */
 
@@ -70,32 +81,36 @@ function production( test )
   /* */
 
   a.fileProvider.filesReflect({ reflectMap : { [ sampleDir ] : a.abs( 'sample/trivial' ) } });
-  let mdlPath = a.abs( __dirname, '../package.json' );
-  let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
 
-  let version;
+
   let remotePath = null;
-  let localPath = null;
+  if( _.git.insideRepository( a.abs( __dirname, '..' ) ) )
+  remotePath = _.git.remotePathFromLocal( a.abs( __dirname, '..' ) );
 
-  if( _.git.insideRepository( _.path.join( __dirname, '..' ) ) )
-  {
-    remotePath = _.git.remotePathFromLocal( _.path.join( __dirname, '..' ) );
-    localPath = _.git.localPathFromInside( _.path.join( __dirname, '..' ) );
-  }
-
-  debugger;
-  let remotePathParsed1, remotePathParsed2;
+  let mdlRepoParsed, remotePathParsed;
   if( remotePath )
   {
-    remotePathParsed1 = _.git.pathParse( remotePath );
-    remotePathParsed2 = _.uri.parseFull( remotePath );
-    /* qqq : should be no 2 parse */
+    mdlRepoParsed = _.git.path.parse( mdl.repository.url );
+    remotePathParsed = _.git.path.parse( remotePath );
   }
 
-  // if( mdl.repository.url === remotePath.full || remotePath === null )
-  // version = _.npm.versionRemoteRetrive( `npm:///${ mdl.name }!alpha` ) === '' ? 'latest' : 'alpha';
-  // else
-  version = remotePathParsed1.remoteVcsLongerPath;
+  let isFork = mdlRepoParsed.user !== remotePathParsed.user || mdlRepoParsed.repo !== remotePathParsed.repo;
+
+  let version;
+  if( isFork )
+  version = _.git.path.nativize( remotePath );
+  else
+  version = _.npm.versionRemoteRetrive( `npm:///${ mdl.name }!alpha` ) === '' ? 'latest' : 'alpha'; /* aaa for Dmytro : ? */
+  /*
+    Dmytro : it is correct code, the first branch nativizes Git repository path ( forks should use Git path )
+    The second branch checks if the npmjs has some defined version of package ( origin should use version on npmjs )
+
+    The routine versionRemoteRetrive returns version of module if it exists, otherwise, the routine returns empty string
+    _.npm.versionRemoteRetrive({ remotePath : 'npm:///wTools!alpha' })
+    // returns : '0.8.858'
+    _.npm.versionRemoteRetrive({ remotePath : 'npm:///wTools!delta' })
+    // returns : ''
+  */
 
   if( !version )
   throw _.err( 'Cannot obtain version to install' );
@@ -108,6 +123,7 @@ function production( test )
   /* */
 
   a.shell( `npm i --production` )
+  .catch( handleDownloadingError )
   .then( ( op ) =>
   {
     test.case = 'install module';
@@ -122,6 +138,28 @@ function production( test )
 
   return a.ready;
 
+  // /* */
+  //
+  // function publishIs() /* aaa for Dmytro : lets discuss */ /* Dmytro : the manual checking of triggers is replaced by routine `workflowTriggerGet` */
+  // {
+  //   if( process.env.GITHUB_WORKFLOW === 'publish' )
+  //   return true;
+  //
+  //   if( process.env.CIRCLECI )
+  //   {
+  //     let lastCommitLog = a.shell
+  //     ({
+  //       currentPath : a.abs( __dirname, '..' ),
+  //       execPath : 'git log --format=%B -n 1',
+  //       sync : 1
+  //     });
+  //     let commitMsg = lastCommitLog.output;
+  //     return _.strBegins( commitMsg, 'version' );
+  //   }
+  //
+  //   return false;
+  // }
+
   /* */
 
   function run( name )
@@ -130,18 +168,49 @@ function production( test )
     if( !a.fileProvider.fileExists( a.abs( filePath ) ) )
     return null;
     runList.push( filePath );
-    a.shell( `node ${ filePath }` )
+    a.shell
+    ({
+      execPath : `node ${ filePath }`,
+      throwingExitCode : 0
+    })
     .then( ( op ) =>
     {
       test.case = `running of sample ${filePath}`;
       test.identical( op.exitCode, 0 );
       test.ge( op.output.length, 3 );
+
+      if( op.exitCode === 0 || !isFork )
       return null;
+
+      test.case = 'fork is up to date with origin'
+      return _.git.isUpToDate
+      ({
+        localPath : a.abs( __dirname, '..' ),
+        remotePath : _.git.path.normalize( mdl.repository.url )
+      })
+      .then( ( isUpToDate ) =>
+      {
+        test.identical( isUpToDate, true );
+        return null;
+      })
     });
 
   }
 
+  /* */
+
+  function handleDownloadingError( err )
+  {
+    if( _.strHas( err.message, 'npm ERR! ERROR: Repository not found' ) )
+    {
+      _.errAttend( err );
+      return a.shell( `npm i --production` );
+    }
+    throw _.err( err );
+  }
 }
+
+production.timeOut = 300000;
 
 //
 
@@ -164,7 +233,6 @@ function samples( test )
 
   let found = fileProvider.filesFind
   ({
-    // filePath : path.join( sampleDir, '**/*.(s|js|ss)' ),
     filePath : path.join( sampleDir, '**/*.(s|ss)' ),
     withStem : 0,
     withDirs : 0,
@@ -243,11 +311,16 @@ function eslint( test )
   let sampleDir = path.join( rootPath, 'sample' );
   let ready = _.take( null );
 
-  // if( _.process.insideTestContainer() && process.platform !== 'linux' )
-  // return test.true( true );
-
-  if( process.platform !== 'linux' )
-  return test.true( true );
+  if( _.process.insideTestContainer() )
+  {
+    let validPlatform = process.platform === 'linux';
+    let validVersion = process.versions.node.split( '.' )[ 0 ] === '14';
+    if( !validPlatform || !validVersion )
+    {
+      test.true( true );
+      return;
+    }
+  }
 
   let start = _.process.starter
   ({
@@ -274,13 +347,17 @@ function eslint( test )
       '--ignore-pattern', '*.tgs',
       '--ignore-pattern', '*.bat',
       '--ignore-pattern', '*.sh',
+      '--ignore-pattern', '*.jslike',
+      '--ignore-pattern', '*.less',
+      '--ignore-pattern', '*.hbs',
+      '--ignore-pattern', '*.noeslint',
       '--quiet'
     ],
     throwingExitCode : 0,
     outputCollecting : 1,
   })
 
-  /**/
+  /* */
 
   ready.then( () =>
   {
@@ -295,7 +372,7 @@ function eslint( test )
     return null;
   })
 
-  /**/
+  /* */
 
   if( fileProvider.fileExists( sampleDir ) )
   ready.then( () =>
@@ -317,6 +394,54 @@ function eslint( test )
 }
 
 eslint.rapidity = -2;
+
+//
+
+function build( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+
+  let mdlPath = a.abs( __dirname, '../package.json' );
+  let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
+
+  if( !mdl.scripts.build )
+  {
+    test.true( true );
+    return;
+  }
+
+  let remotePath = _.git.remotePathFromLocal( a.abs( __dirname, '..' ) );
+
+  let ready = _.git.repositoryClone
+  ({
+    remotePath,
+    localPath : a.routinePath,
+    verbosity : 2,
+    sync : 0
+  })
+
+  _.process.start
+  ({
+    execPath : 'npm run build',
+    currentPath : a.routinePath,
+    throwingExitCode : 0,
+    mode : 'shell',
+    outputPiping : 1,
+    ready,
+  })
+
+  ready.then( ( got ) =>
+  {
+    test.identical( got.exitCode, 0 );
+    return null;
+  })
+
+  return ready;
+}
+
+build.rapidity = -1;
+build.timeOut = 900000;
 
 // --
 // declare
@@ -343,6 +468,7 @@ let Self =
     production,
     samples,
     eslint,
+    build
   },
 
 }
