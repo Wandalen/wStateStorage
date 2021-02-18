@@ -416,7 +416,7 @@ function storageSave( test )
 
   test.case = 'storageFilePath is a root directory'
   var classInstance = new sampleClass( fields );
-  classInstance.astorageSave();
+  classInstance.storageSave();
   test.identical( classInstance.storageFilePath, '/storage' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
   test.identical( got, fields );
