@@ -141,7 +141,7 @@ function storageSave()
   let path = fileProvider.path;
 
   _.assert( arguments.length === 0, 'Expects no arguments' );
-  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.toStrShort( storageFilePath ) );
+  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringShort( storageFilePath ) );
 
   let result = self._storageFilesWrite({ storageFilePath });
 
@@ -165,7 +165,7 @@ function storageToSave( o )
   let self = this;
   let storage = self.storage;
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
-  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.toStrShort( storage ) );
+  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringShort( storage ) );
   self.storageCheck( storage );
   _.routineOptions( storageToSave, arguments );
   return storage;
@@ -333,7 +333,7 @@ function storageLoaded( o )
   if( self.storagesLoaded !== undefined )
   {
     debugger;
-    _.assert( _.arrayIs( self.storagesLoaded ), () => 'Expects array {-self.storagesLoaded-}, but got ' + _.strType( self.storagesLoaded ) );
+    _.assert( _.arrayIs( self.storagesLoaded ), () => 'Expects array {-self.storagesLoaded-}, but got ' + _.entity.strType( self.storagesLoaded ) );
     _.assert( _.strIs( o.storageFilePath ), 'Expects string {-self.storagesLoaded-}' );
     self.storagesLoaded.push({ filePath : o.storageFilePath });
   }
@@ -497,7 +497,7 @@ function storageFilePathToLoadGet( o )
   (
     result.storageFilePath === null
     || !!_.all( result.storageFilePath, ( storageFilePath ) => fileProvider.statResolvedRead( storageFilePath ) ),
-    () => 'Storage file does not exist ' + _.toStr( o )
+    () => 'Storage file does not exist ' + _.entity.exportString( o )
   );
 
   return result.storageFilePath;
@@ -614,7 +614,7 @@ function storageCheck( storage )
   let self = this;
   _.assert( arguments.length === 1 );
   if( !self.storageIs( storage ) )
-  throw _.err( 'Strange storage :\n' + _.toStr( storage, { levels : 2, multiline : 1, wrap : 0 } ) );
+  throw _.err( 'Strange storage :\n' + _.entity.exportString( storage, { levels : 2, multiline : 1, wrap : 0 } ) );
 }
 
 //
