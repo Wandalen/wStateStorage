@@ -76,7 +76,6 @@ _.StateStorage.mixin( Self );
 //
 
 let sample = new Self();
-debugger;
 sample.storageLoad();
 if( !sample.random )
 sample.random = Math.random();

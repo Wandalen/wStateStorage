@@ -592,7 +592,6 @@ function storageLoad( test )
   function storageLoaded( o )
   {
     let self = this;
-    debugger;
     let result = _.StateStorage.prototype.storageLoaded.call( self, o );
     self.ino = o.storage.ino;
     return o.storage;
