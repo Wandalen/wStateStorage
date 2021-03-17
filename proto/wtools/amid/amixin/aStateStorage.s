@@ -332,7 +332,6 @@ function storageLoaded( o )
 
   if( self.storagesLoaded !== undefined )
   {
-    debugger;
     _.assert( _.arrayIs( self.storagesLoaded ), () => 'Expects array {-self.storagesLoaded-}, but got ' + _.entity.strType( self.storagesLoaded ) );
     _.assert( _.strIs( o.storageFilePath ), 'Expects string {-self.storagesLoaded-}' );
     self.storagesLoaded.push({ filePath : o.storageFilePath });
@@ -492,7 +491,6 @@ function storageFilePathToLoadGet( o )
 
   /* */
 
-  debugger;
   _.sure
   (
     result.storageFilePath === null
