@@ -29,10 +29,10 @@ if( typeof module !== 'undefined' )
  * @module Tools/mid/StateStorage
 */
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Parent = null;
-let Self = wStateStorage;
+const _global = _global_;
+const _ = _global_.wTools;
+const Parent = null;
+const Self = wStateStorage;
 function wStateStorage( o )
 {
   return _.workpiece.construct( Self, this, arguments );
@@ -141,7 +141,7 @@ function storageSave()
   let path = fileProvider.path;
 
   _.assert( arguments.length === 0, 'Expects no arguments' );
-  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringShort( storageFilePath ) );
+  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringShallow( storageFilePath ) );
 
   let result = self._storageFilesWrite({ storageFilePath });
 
@@ -165,7 +165,7 @@ function storageToSave( o )
   let self = this;
   let storage = self.storage;
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
-  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringShort( storage ) );
+  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringShallow( storage ) );
   self.storageCheck( storage );
   _.routineOptions( storageToSave, arguments );
   return storage;

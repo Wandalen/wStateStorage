@@ -14,7 +14,7 @@ if( typeof module !== 'undefined' )
 
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // context
@@ -374,7 +374,7 @@ function storageSave( test )
   function storageToSave( o )
   {
     let self = this;
-    let storage = _.mapExtend( null, _.mapOnly( self, StoreMap ) );
+    let storage = _.mapExtend( null, _.mapOnly_( null, self, StoreMap ) );
     return storage;
   }
 
@@ -600,7 +600,7 @@ function storageLoad( test )
   function storageToSave( o )
   {
     let self = this;
-    let storage = _.mapOnly( self, storeMap );
+    let storage = _.mapOnly_( null, self, storeMap );
     return storage;
   }
 
@@ -649,7 +649,7 @@ function storageLoad( test )
 
   test.identical( instance1.storageToSave(), storeSaved );
   test.identical( instance2.storageToSave(), storeMap );
-  var got = _.mapOnly( instance1, storeMap );
+  var got = _.mapOnly_( null, instance1, storeMap );
   test.identical( got, storeSaved );
   instance1.storageSave();
   test.identical( instance1.storageToSave(), instance1.fileProvider.fileReadJs( instance1.storageFilePathToLoadGet() ) )
@@ -679,7 +679,7 @@ function storageLoad( test )
 
   test.identical( instance1.storageToSave(), storeSaved );
   test.identical( instance2.storageToSave(), storeMap );
-  var got = _.mapOnly( instance1, storeMap );
+  var got = _.mapOnly_( null, instance1, storeMap );
   test.identical( got, storeSaved );
   instance1.storageSave();
   test.identical( instance1.storageToSave(), instance1.fileProvider.fileReadJs( instance1.storageFilePathToLoadGet() ) )
@@ -757,7 +757,7 @@ function storageLoad( test )
 
 //
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.mid.StateStorage',
@@ -783,7 +783,7 @@ let Self =
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
