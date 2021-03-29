@@ -47,8 +47,8 @@ Self.shortName = 'StateStorage';
 function _storageFileWrite( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
   _.routineOptions( _storageFileWrite, o );
@@ -93,8 +93,8 @@ _storageFileWrite.defaults =
 function _storageFilesWrite( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
 
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
@@ -137,8 +137,8 @@ function storageSave()
 {
   let self = this;
   let storageFilePath = self.storageFilePathToSaveGet();
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
 
   _.assert( arguments.length === 0, 'Expects no arguments' );
   _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringShallow( storageFilePath ) );
@@ -185,8 +185,8 @@ storageToSave.defaults =
 function _storageFileRead( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
   if( !_.mapIs( o ) )
@@ -224,8 +224,8 @@ _storageFileRead.defaults =
 function _storageFilesRead( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
   if( !_.mapIs( o ) )
@@ -324,7 +324,7 @@ function storageLoad()
 function storageLoaded( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
+  const fileProvider = self.fileProvider;
 
   self.storageCheck( o.storage );
   _.assert( arguments.length === 1 );
@@ -356,8 +356,8 @@ storageLoaded.defaults =
 function storageFilePathApply( storageFilePath )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
 
   _.assert( storageFilePath === null || path.s.allAre( storageFilePath ) );
 
@@ -383,8 +383,8 @@ function storageFilePathApply( storageFilePath )
 function storageFileFromDirPath( storageDirPath )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
   let storageFilePath = null;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -401,8 +401,8 @@ function storageFileFromDirPath( storageDirPath )
 function storagePathGet( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
@@ -453,8 +453,8 @@ storagePathGet.defaults =
 function storageFilePathToLoadGet( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
   let result;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -550,8 +550,8 @@ storageFilePathToLoadGet.defaults =
 function storageFilePathToSaveGet( o )
 {
   let self = this;
-  let fileProvider = self.fileProvider;
-  let path = fileProvider.path;
+  const fileProvider = self.fileProvider;
+  const path = fileProvider.path;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
