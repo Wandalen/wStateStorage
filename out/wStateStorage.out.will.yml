@@ -162,6 +162,8 @@ module:
         path:
           - ../proto
           - ../proto/Integration.test.ss
+          - ../proto/node_modules
+          - ../proto/node_modules/wstatestorage
           - ../proto/wtools
           - ../proto/wtools/Tools.s
           - ../proto/wtools/abase
