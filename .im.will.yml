@@ -78,8 +78,8 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - /pro/module/wStateStorage/proto/wtools/amid/amixin/aStateStorage.s
-    - /pro/module/wStateStorage/proto/node_modules/wstatestorage
+    - proto/wtools/amid/amixin/aStateStorage.s
+    - proto/node_modules/wstatestorage
 reflector:
   reflect.proto:
     inherit: predefined.*
