@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wStateStorage.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wStateStorage.out.will.yml: &ref_0
+    hash: d003ee3d8ef66dfe8952d747b723edf0
+    size: 39441
+  ../.ex.will.yml: &ref_1
     hash: a85fcc02ece33483ad385c3658d8334a
     size: 2088
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: 91c560f819430ce388c5c0ad486ac9e4
     size: 5011
 module:
@@ -22,18 +25,18 @@ module:
         yourself and forget about details of implementation you don't worry.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wstatestorage
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -164,9 +167,9 @@ module:
           - ../proto
           - ../proto/Integration.test.ss
           - ../proto/node_modules
+          - ../proto/node_modules/Tools
           - ../proto/node_modules/wstatestorage
           - ../proto/wtools
-          - ../proto/wtools/Tools.s
           - ../proto/wtools/abase
           - ../proto/wtools/amid
           - ../proto/wtools/amid/amixin
@@ -706,6 +709,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          filePath: 'reflector::exported.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          filePath: 'reflector::exported.files.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -794,8 +815,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wStateStorage.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wStateStorage
@@ -809,13 +831,20 @@ module:
         yourself and forget about details of implementation you don't worry.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wstatestorage
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1491,3 +1520,6 @@ module:
       ../.im.will.yml:
         hash: 91c560f819430ce388c5c0ad486ac9e4
         size: 5011
+      wStateStorage.out.will.yml:
+        hash: d003ee3d8ef66dfe8952d747b723edf0
+        size: 39441
