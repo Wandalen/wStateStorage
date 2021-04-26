@@ -51,7 +51,7 @@ function _storageFileWrite( o )
   const path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
-  _.routineOptions( _storageFileWrite, o );
+  _.routine.options_( _storageFileWrite, o );
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-o.storage-}' );
   _.assert( arguments.length === 1 );
   _.assert( path.isAbsolute( o.storageFilePath ) );
@@ -101,7 +101,7 @@ function _storageFilesWrite( o )
 
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.routineOptions( _storageFilesWrite, o );
+  _.routine.options_( _storageFilesWrite, o );
 
   o.storageFilePath = o.storageFilePath || self.storageFilePathToSaveGet();
 
@@ -167,7 +167,7 @@ function storageToSave( o )
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
   // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringShallow( storage ) );
   self.storageCheck( storage );
-  _.routineOptions( storageToSave, arguments );
+  _.routine.options_( storageToSave, arguments );
   return storage;
 }
 
@@ -192,7 +192,7 @@ function _storageFileRead( o )
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
 
-  _.routineOptions( _storageFileRead, o );
+  _.routine.options_( _storageFileRead, o );
   _.assert( path.isAbsolute( o.storageFilePath ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -240,7 +240,7 @@ function _storageFilesRead( o )
   _.assert( !!o.storageFilePath );
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'Expects absolute paths {-o.storageFilePath-}' );
-  _.routineOptions( _storageFilesRead, o );
+  _.routine.options_( _storageFilesRead, o );
 
   let result = Object.create( null );
 
@@ -328,7 +328,7 @@ function storageLoaded( o )
 
   self.storageCheck( o.storage );
   _.assert( arguments.length === 1 );
-  _.routineOptions( storageLoaded, arguments );
+  _.routine.options_( storageLoaded, arguments );
 
   if( self.storagesLoaded !== undefined )
   {
@@ -338,7 +338,7 @@ function storageLoaded( o )
   }
 
   if( self.storage !== undefined )
-  self.storage = _.mapExtend( self.storage, o.storage );
+  self.storage = _.props.extend( self.storage, o.storage );
 
   return true;
 }
@@ -406,7 +406,7 @@ function storagePathGet( o )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
-  o = _.routineOptions( storagePathGet, o );
+  o = _.routine.options_( storagePathGet, o );
 
   /* */
 

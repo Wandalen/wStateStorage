@@ -23,7 +23,7 @@ const _ = _global_.wTools;
 function sampleClassMake( o )
 {
 
-  _.routineOptions( sampleClassMake, arguments );
+  _.routine.options_( sampleClassMake, arguments );
 
   if( !o.fileProvider )
   {
@@ -41,7 +41,7 @@ function sampleClassMake( o )
     _.workpiece.initFields( this );
     Object.preventExtensions( this );
     if( o )
-    _.mapExtend( this, o );
+    _.props.extend( this, o );
     if( !o || !o.fileProvider )
     this.fileProvider.filesTree = _.cloneJust( this.fileProvider.filesTree );
   }
@@ -55,7 +55,7 @@ function sampleClassMake( o )
   let Extension =
   {
     init,
-    Composes : _.mapExtend( null, o.fieldsMap || {}, o.storeMap || {} ),
+    Composes : _.props.extend( null, o.fieldsMap || {}, o.storeMap || {} ),
     Associates,
   }
 
@@ -374,7 +374,7 @@ function storageSave( test )
   function storageToSave( o )
   {
     let self = this;
-    let storage = _.mapExtend( null, _.mapOnly_( null, self, StoreMap ) );
+    let storage = _.props.extend( null, _.mapOnly_( null, self, StoreMap ) );
     return storage;
   }
 
@@ -424,7 +424,7 @@ function storageSave( test )
   /* */
 
   test.case = 'storageFilePath does not exist'
-  var classInstance = new sampleClass( _.mapExtend( null, fields, { storageFilePath : '/storageFilePath' } ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, { storageFilePath : '/storageFilePath' } ) );
   classInstance.storageSave();
   test.identical( classInstance.storageFilePath, '/storageFilePath' )
   var got = classInstance.fileProvider.fileReadJs( classInstance.storageFilePath );
@@ -433,7 +433,7 @@ function storageSave( test )
   /* */
 
   test.case = 'storageFilePath is terminal file'
-  var classInstance = new sampleClass( _.mapExtend( null, fields, { storageFilePath : '/storageFilePath' } ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, { storageFilePath : '/storageFilePath' } ) );
   classInstance.fileProvider.fileWrite( classInstance.storageFilePath, 'something' )
   classInstance.storageSave();
   test.identical( classInstance.storageFilePath, '/storageFilePath' )
@@ -443,7 +443,7 @@ function storageSave( test )
   /* */
 
   test.case = 'storageFilePath is directory'
-  var classInstance = new sampleClass( _.mapExtend( null, fields, { storageFilePath : '/storageFilePath' } ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, { storageFilePath : '/storageFilePath' } ) );
   classInstance.fileProvider.filesDelete( classInstance.storageFilePath );
   classInstance.fileProvider.dirMake( classInstance.storageFilePath );
   test.shouldThrowErrorSync( () => classInstance.storageSave() );
@@ -451,7 +451,7 @@ function storageSave( test )
   /* */
 
   test.case = 'storageFilePath is directory'
-  var classInstance = new sampleClass( _.mapExtend( null, fields, { storageDirPath : '/storageFilePath' } ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, { storageDirPath : '/storageFilePath' } ) );
   classInstance.fileProvider.filesDelete( classInstance.storageDirPath );
   classInstance.fileProvider.dirMake( classInstance.storageDirPath );
   classInstance.storageSave();
@@ -467,7 +467,7 @@ function storageSave( test )
     storageDirPath : [ '/', '/some/dir' ],
     fileProvider : new _.FileProvider.Extract()
   }
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o2 ) );
   test.identical( classInstance.storageDirPath, [ '/', '/some/dir' ] );
   test.identical( classInstance.storageFilePath, null );
   test.identical( classInstance.storageFilePathToLoadGet(), null );
@@ -489,7 +489,7 @@ function storageSave( test )
     storageFilePath : [ '/storage2', '/some/dir/storage2' ],
     fileProvider : new _.FileProvider.Extract()
   }
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o2 ) );
   test.identical( classInstance.storageDirPath, [ '/x', '/y' ] );
   test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
   test.identical( classInstance.storageFilePathToLoadGet(), null );
@@ -510,7 +510,7 @@ function storageSave( test )
     ino : 13,
   }
 
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o3 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o3 ) );
   test.identical( classInstance.storageDirPath, [ '/x', '/y' ] );
   test.identical( classInstance.storageFilePath, [ '/storage2', '/some/dir/storage2' ] );
   test.identical( classInstance.storageFilePathToLoadGet(), [ '/storage2', '/some/dir/storage2' ] );
@@ -532,7 +532,7 @@ function storageSave( test )
   {
     storageFilePath : null,
   }
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o2 ) );
 
   test.identical( classInstance.storageDirPath, null );
   test.identical( classInstance.storageFilePath, null );
@@ -554,7 +554,7 @@ function storageSave( test )
   return;
 
   test.case = 'storageSave does not accept any arguments'
-  var classInstance = new sampleClass( _.mapExtend( null, fields ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields ) );
   test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave( { storageFilePath : '/__storage' } ) )
 
   test.case = 'set paths to null'
@@ -563,7 +563,7 @@ function storageSave( test )
     storageFilePath : null,
     storageFileName : null,
   }
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o2 ) );
   test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave() )
 
   test.case = 'set storageFileName to null'
@@ -571,7 +571,7 @@ function storageSave( test )
   {
     storageFileName : null
   }
-  var classInstance = new sampleClass( _.mapExtend( null, fields, o2 ) );
+  var classInstance = new sampleClass( _.props.extend( null, fields, o2 ) );
   test.shouldThrowErrorOfAnyKind( () => classInstance.storageSave() )
 
 
