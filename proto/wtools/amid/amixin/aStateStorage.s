@@ -591,7 +591,7 @@ function storageIs( storage )
 {
   let self = this;
   _.assert( arguments.length === 1 );
-  if( !_.objectIs( storage ) )
+  if( !_.object.isBasic( storage ) )
   return false;
   return true;
 }
