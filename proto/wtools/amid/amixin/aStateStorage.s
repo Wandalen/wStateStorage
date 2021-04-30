@@ -141,7 +141,7 @@ function storageSave()
   const path = fileProvider.path;
 
   _.assert( arguments.length === 0, 'Expects no arguments' );
-  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringShallow( storageFilePath ) );
+  _.assert( !!storageFilePath, () => 'not clear where to save ' + _.entity.exportStringDiagnosticShallow( storageFilePath ) );
 
   let result = self._storageFilesWrite({ storageFilePath });
 
@@ -165,7 +165,7 @@ function storageToSave( o )
   let self = this;
   let storage = self.storage;
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
-  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringShallow( storage ) );
+  // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringDiagnosticShallow( storage ) );
   self.storageCheck( storage );
   _.routine.options_( storageToSave, arguments );
   return storage;
