@@ -2,12 +2,9 @@ format: outwillfile-2.0
 root:
   - wStateStorage.out
 consistency:
-  ../.ex.will.yml: &ref_0
-    hash: a85fcc02ece33483ad385c3658d8334a
-    size: 2088
-  ../.im.will.yml: &ref_1
-    hash: 91c560f819430ce388c5c0ad486ac9e4
-    size: 5011
+  ../will.yml: &ref_0
+    hash: 277f177573cd126807cd30663266c07d
+    size: 6879
 module:
   wStateStorage.out:
     about:
@@ -22,18 +19,18 @@ module:
         yourself and forget about details of implementation you don't worry.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
+      license: MIT
+      npm.name: wstatestorage
+      author: Kostiantyn Wandalen <wanalen@01.school>
+      keywords: &ref_1
+        - wTools
+      contributors: &ref_2
+        - Kostiantyn Wandalen <wanalen@01.school>
+      interpreters: &ref_3
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
-        - wTools
-      license: MIT
-      author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
-        - Kostiantyn Wandalen <wanalen@01.school>
-      npm.name: wstatestorage
-      npm.scripts: &ref_5
+      npm.scripts: &ref_4
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -48,15 +45,11 @@ module:
       module.original.willfiles:
         criterion:
           predefined: 1
-        path:
-          - ../.ex.will.yml
-          - ../.im.will.yml
+        path: ../will.yml
       module.peer.willfiles:
         criterion:
           predefined: 1
-        path:
-          - ../.ex.will.yml
-          - ../.im.will.yml
+        path: ../will.yml
       module.peer.in:
         criterion:
           predefined: 1
@@ -794,8 +787,7 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      ../will.yml: *ref_0
   ../:
     about:
       name: wStateStorage
@@ -809,26 +801,22 @@ module:
         yourself and forget about details of implementation you don't worry.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
       license: MIT
-      author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
       npm.name: wstatestorage
-      npm.scripts: *ref_5
+      author: Kostiantyn Wandalen <wanalen@01.school>
+      keywords: *ref_1
+      contributors: *ref_2
+      interpreters: *ref_3
+      npm.scripts: *ref_4
     path:
       module.willfiles:
         criterion:
           predefined: 1
-        path:
-          - .ex.will.yml
-          - .im.will.yml
+        path: will.yml
       module.original.willfiles:
         criterion:
           predefined: 1
-        path:
-          - .ex.will.yml
-          - .im.will.yml
+        path: will.yml
       module.peer.willfiles:
         criterion:
           predefined: 1
@@ -1485,9 +1473,6 @@ module:
           - 'build::release'
           - 'build::npm'
     consistency:
-      ../.ex.will.yml:
-        hash: a85fcc02ece33483ad385c3658d8334a
-        size: 2088
-      ../.im.will.yml:
-        hash: 91c560f819430ce388c5c0ad486ac9e4
-        size: 5011
+      ../will.yml:
+        hash: 277f177573cd126807cd30663266c07d
+        size: 6879
