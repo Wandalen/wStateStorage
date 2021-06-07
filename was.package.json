@@ -17,6 +17,6 @@
     "url" : "https://github.com/Wandalen/wStateStorage/issues"
   },
   "dependencies" : { "wTools" : "", "wProto" : "", "wFiles" : "" },
-  "devDependencies" : { "wTesting" : "" },
+  "devDependencies" : { "wTesting" : "", "eslint" : "7.1.0" },
   "keywords" : [ "wTools" ]
 }
