@@ -51,7 +51,7 @@ function _storageFileWrite( o )
   const path = fileProvider.path;
   let logger = self.logger || _global_.logger;
 
-  _.routine.options_( _storageFileWrite, o );
+  _.routine.options( _storageFileWrite, o || null );
   _.assert( o.storage !== undefined && !_.routineIs( o.storage ), () => 'Expects defined data {-o.storage-}' );
   _.assert( arguments.length === 1 );
   _.assert( path.isAbsolute( o.storageFilePath ) );
@@ -101,7 +101,7 @@ function _storageFilesWrite( o )
 
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.routine.options_( _storageFilesWrite, o );
+  _.routine.options( _storageFilesWrite, o || null );
 
   o.storageFilePath = o.storageFilePath || self.storageFilePathToSaveGet();
 
@@ -167,7 +167,7 @@ function storageToSave( o )
   _.assert( storage !== undefined, '{-self.storage-} is not defined' );
   // _.sure( self.storageIs( storage ), () => 'Strange storage : ' + _.entity.exportStringDiagnosticShallow( storage ) );
   self.storageCheck( storage );
-  _.routine.options_( storageToSave, arguments );
+  _.routine.options( storageToSave, arguments || null );
   return storage;
 }
 
@@ -192,7 +192,7 @@ function _storageFileRead( o )
   if( !_.mapIs( o ) )
   o = { storageFilePath : o }
 
-  _.routine.options_( _storageFileRead, o );
+  _.routine.options( _storageFileRead, o || null );
   _.assert( path.isAbsolute( o.storageFilePath ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -240,7 +240,7 @@ function _storageFilesRead( o )
   _.assert( !!o.storageFilePath );
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
   _.assert( path.s.allAreAbsolute( o.storageFilePath ), 'Expects absolute paths {-o.storageFilePath-}' );
-  _.routine.options_( _storageFilesRead, o );
+  _.routine.options( _storageFilesRead, o || null );
 
   let result = Object.create( null );
 
@@ -328,7 +328,7 @@ function storageLoaded( o )
 
   self.storageCheck( o.storage );
   _.assert( arguments.length === 1 );
-  _.routine.options_( storageLoaded, arguments );
+  o = _.routine.options( storageLoaded, arguments );
 
   if( self.storagesLoaded !== undefined )
   {
@@ -406,7 +406,7 @@ function storagePathGet( o )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.strDefined( self.storageFileName ), 'Expects string field {-storageFileName-}' );
-  o = _.routine.options_( storagePathGet, o );
+  o = _.routine.options( storagePathGet, o || null );
 
   /* */
 
@@ -424,7 +424,7 @@ function storagePathGet( o )
 
   if( !o.storageFilePath )
   o.storageFilePath = self.storageFileFromDirPath( o.storageDirPath );
-  o.storageFilePath = path.s.resolve( o.storageDirPath, o.storageFilePath );
+  o.storageFilePath = path.s.resolve( o.storageDirPath || path.current(), o.storageFilePath );
 
   o.storageDirPath = path.s.dir( o.storageFilePath );
 
@@ -505,20 +505,21 @@ function storageFilePathToLoadGet( o )
   function forPath( o )
   {
 
-    o.storageFilePath = path.join( o.storageDirPath, o.storageFilePath );
+    let storageDirPath = o.storageDirPath;
+    storageDirPath = path.resolve( storageDirPath );
+    o.storageFilePath = path.join( storageDirPath, o.storageFilePath );
 
     if( !fileProvider.fileExists( o.storageFilePath ) )
     do
     {
-      o.storageFilePath = path.join( o.storageDirPath, self.storageFileName );
+      o.storageFilePath = path.join( storageDirPath, self.storageFileName );
+      o.storageFilePath = path.resolve( o.storageFilePath );
       if( fileProvider.fileExists( o.storageFilePath ) )
       break;
-      o.storageDirPath = path.dir( o.storageDirPath );
+      storageDirPath = path.dir( storageDirPath );
     }
-    // while( o.storageDirPath !== '/..' );
-    while( o.storageDirPath !== '/..' && o.storageDirPath !== '/../' );
-
-    if( o.storageDirPath === '/..' || o.storageDirPath === '/../' )
+    while( storageDirPath !== '/..' && storageDirPath !== '/../' );
+    if( storageDirPath === '/..' || storageDirPath === '/../' )
     {
       return null;
     }
