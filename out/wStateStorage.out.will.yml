@@ -3,8 +3,8 @@ root:
   - wStateStorage.out
 consistency:
   ../will.yml: &ref_0
-    hash: 277f177573cd126807cd30663266c07d
-    size: 6879
+    hash: 99f66eb7ef60917639a984cbea94450b
+    size: 6990
 module:
   wStateStorage.out:
     about:
@@ -191,6 +191,13 @@ module:
         autoExporting: 0
         enabled: 0
         criterion:
+          development: 1
+      eslint:
+        path: 'npm:///eslint#7.1.0'
+        autoExporting: 0
+        enabled: 0
+        criterion:
+          external: 1
           development: 1
     reflector:
       reflect.proto.debug.raw:
@@ -942,6 +949,13 @@ module:
         enabled: 0
         criterion:
           development: 1
+      eslint:
+        path: 'npm:///eslint#7.1.0'
+        autoExporting: 0
+        enabled: 0
+        criterion:
+          external: 1
+          development: 1
     reflector:
       reflect.proto.debug.raw:
         src:
@@ -1474,5 +1488,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: 277f177573cd126807cd30663266c07d
-        size: 6879
+        hash: 99f66eb7ef60917639a984cbea94450b
+        size: 6990
