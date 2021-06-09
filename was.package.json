@@ -5,7 +5,7 @@
   "author" : "Kostiantyn Wandalen <wanalen@01.school>",
   "license" : "MIT",
   "main" : "proto/node_modules/wstatestorage",
-  "files" : [ "proto/wtools/amid/amixin", "out", "proto/node_modules" ],
+  "files" : [ "proto/wtools/amid/amixin", "out", "proto/node_modules", "proto/node_modules/Tools", "proto/node_modules/wstatestorage" ],
   "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-3", "docgen" : "wdocgen proto" },
   "repository" :
   {
