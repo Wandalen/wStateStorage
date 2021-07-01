@@ -1,22 +1,38 @@
 {
-  "name" : "wstatestorage",
-  "version" : "0.3.236",
-  "description" : "Mixin to add persistent state storing functionality to a class. StateStorage solves the common problem to persistently store the state of an object. It let save the state in a specific moment ( for example on process exit ) and to restore the state later ( for example on process start ). Use the module to be more cross-platform, don't repeat yourself and forget about details of implementation you don't worry.",
-  "author" : "Kostiantyn Wandalen <wanalen@01.school>",
-  "license" : "MIT",
-  "main" : "proto/node_modules/wstatestorage",
-  "files" : [ "proto/wtools/amid/amixin", "out", "proto/node_modules", "proto/node_modules/Tools", "proto/node_modules/wstatestorage" ],
-  "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-3", "docgen" : "wdocgen proto" },
-  "repository" :
-  {
-    "type" : "git",
-    "url" : "https://github.com/Wandalen/wStateStorage.git"
+  "name": "wstatestorage",
+  "version": "0.3.237",
+  "description": "Mixin to add persistent state storing functionality to a class. StateStorage solves the common problem to persistently store the state of an object. It let save the state in a specific moment ( for example on process exit ) and to restore the state later ( for example on process start ). Use the module to be more cross-platform, don't repeat yourself and forget about details of implementation you don't worry.",
+  "author": "Kostiantyn Wandalen <wanalen@01.school>",
+  "license": "MIT",
+  "main": "proto/node_modules/wstatestorage",
+  "files": [
+    "proto/wtools/amid/amixin",
+    "out",
+    "proto/node_modules",
+    "proto/node_modules/Tools",
+    "proto/node_modules/wstatestorage"
+  ],
+  "scripts": {
+    "test": "wtest .run 'proto/**' rapidity:-3",
+    "docgen": "wdocgen proto"
   },
-  "bugs" :
-  {
-    "url" : "https://github.com/Wandalen/wStateStorage/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wandalen/wStateStorage.git"
   },
-  "dependencies" : { "wTools" : "", "wProto" : "", "wFiles" : "" },
-  "devDependencies" : { "wTesting" : "", "eslint" : "7.1.0" },
-  "keywords" : [ "wTools" ]
+  "bugs": {
+    "url": "https://github.com/Wandalen/wStateStorage/issues"
+  },
+  "dependencies": {
+    "wTools": "",
+    "wProto": "",
+    "wFiles": ""
+  },
+  "devDependencies": {
+    "wTesting": "",
+    "eslint": "7.1.0"
+  },
+  "keywords": [
+    "wTools"
+  ]
 }
