@@ -1,6 +1,6 @@
 {
   "name": "wstatestorage",
-  "version": "0.3.246",
+  "version": "0.3.247",
   "description": "Mixin to add persistent state storing functionality to a class. StateStorage solves the common problem to persistently store the state of an object. It let save the state in a specific moment ( for example on process exit ) and to restore the state later ( for example on process start ). Use the module to be more cross-platform, don't repeat yourself and forget about details of implementation you don't worry.",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
   "license": "MIT",
@@ -24,12 +24,12 @@
     "url": "https://github.com/Wandalen/wStateStorage/issues"
   },
   "dependencies": {
-    "wTools": "latest",
-    "wProto": "latest",
-    "wFiles": "latest"
+    "wTools": "delta",
+    "wProto": "delta",
+    "wFiles": "delta"
   },
   "devDependencies": {
-    "wTesting": "latest",
+    "wTesting": "delta",
     "eslint": "7.1.0"
   },
   "keywords": [
