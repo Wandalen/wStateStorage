@@ -3,8 +3,8 @@ root:
   - wStateStorage.out
 consistency:
   ../will.yml: &ref_0
-    hash: 99f66eb7ef60917639a984cbea94450b
-    size: 6990
+    hash: 7bad3233e34a2aaa2caaeaf136eee216
+    size: 6849
 module:
   wStateStorage.out:
     about:
@@ -380,9 +380,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -718,12 +715,6 @@ module:
           - 'step::doc.export'
         criterion:
           content: doc
-          export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
           export: 1
       export:
         steps:
@@ -1086,9 +1077,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -1425,12 +1413,6 @@ module:
         criterion:
           content: doc
           export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
-          export: 1
       export:
         steps:
           - 'build::proto.export'
@@ -1488,5 +1470,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: 99f66eb7ef60917639a984cbea94450b
-        size: 6990
+        hash: 7bad3233e34a2aaa2caaeaf136eee216
+        size: 6849
