@@ -3,8 +3,8 @@ root:
   - wStateStorage.out
 consistency:
   ../will.yml: &ref_0
-    hash: 7bad3233e34a2aaa2caaeaf136eee216
-    size: 6849
+    hash: b36f32c52071b5da404e0fad049c0449
+    size: 6857
 module:
   wStateStorage.out:
     about:
@@ -1470,5 +1470,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: 7bad3233e34a2aaa2caaeaf136eee216
-        size: 6849
+        hash: b36f32c52071b5da404e0fad049c0449
+        size: 6857
